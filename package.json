@@ -1,0 +1,38 @@
+{
+  "name": "app_comp4300_spades",
+  "productName": "Spades",
+  "description": "Spades with a splash of AI. Written for COMP 4300.",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "npm run build && electron ./dist/main.js"
+  },
+  "private": true,
+  "author": "Kyle Huggins (http://huggins.io/)",
+  "contributors": [
+    "Riley Judd (http://github.com/FairyTamerRyles)"
+  ],
+  "homepage": "https://github.com/kjhx/app_comp4300_spades#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjhx/app_comp4300_spades.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^12.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "@typescript-eslint/parser": "^4.3.0",
+    "electron": "^9.0.4",
+    "elemon": "^5.0.3",
+    "eslint": "^7.10.0",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "electron-debug": "^3.1.0",
+    "electron-log": "^4.2.4",
+    "electron-util": "^0.14.2"
+  }
+}
