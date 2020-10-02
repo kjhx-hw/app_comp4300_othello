@@ -1,0 +1,5 @@
+# .kodiak.toml
+version = 1
+merge.automerge_label = "automerge"
+merge.blocking_labels = ["question", "in development", "needs qa"]
+merge.delete_branch_on_merge = true
