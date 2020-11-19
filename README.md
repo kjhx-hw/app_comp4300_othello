@@ -1,9 +1,9 @@
-# app_comp4300_spades
-![CI](https://github.com/kjhx/app_comp4300_spades/workflows/CI/badge.svg)
+# app_comp4300_othello
+![CI](https://github.com/kjhx/app_comp4300_othello/workflows/CI/badge.svg)
 
 ## About
 ### Game
-Spades is a four player card game where you attempt to win points by playing a card of the greatest value and betting how many points you will win. This implementation pairs a single person (and a computer teammate) against two computer controlled players.
+<!-- TODO: About the game -->
 
 This project was written for COMP 4300 at Harding University. It was bootstrapped with [electron-quick-start-typescript][].
 
