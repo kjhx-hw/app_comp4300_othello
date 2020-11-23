@@ -18,7 +18,7 @@
     "rules": {
         "indent": [
             "error",
-            4
+            2
         ],
         "linebreak-style": [
             "error",
@@ -31,6 +31,71 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "max-len": [
+            "error",
+            {
+                "code": 140,
+                "ignoreUrls": true,
+                "ignoreTemplateLiterals": true
+            }
+        ],
+        "no-unreachable-loop": [
+            "error"
+        ],
+        "block-scoped-var": "error",
+        "default-case": "error",
+        "eqeqeq": "error",
+        "dot-notation": "error",
+        "no-else-return": "error",
+        "no-multi-spaces": "error",
+        "no-magic-numbers": [
+            "error",
+            {
+                "ignore": [
+                    0
+                ],
+                "ignoreDefaultValues": true
+            }
+        ],
+        "no-useless-return": "error",
+        "yoda": "error",
+        "no-undef-init": "error",
+        "capitalized-comments": [
+            "error"
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "array-bracket-newline": [
+            "error",
+            {
+                "multiline": true
+            }
+        ],
+        "brace-style": "error",
+        "camelcase": "error",
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true
+            }
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "afterColon": true
+            }
+        ],
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "no-var": "error",
+        "prefer-const": "error"
     }
 }
