@@ -1,24 +1,34 @@
 {
     "env": {
         "browser": true,
+        "node": true,
+        "jest": true,
+        "commonjs": true,
         "es2021": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:react/recommended"
     ],
-    "parser": "@typescript-eslint/parser",
     "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
         "ecmaVersion": 12,
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "react"
     ],
     "rules": {
         "indent": [
             "error",
-            2
+            4
         ],
         "linebreak-style": [
             "error",
@@ -32,70 +42,6 @@
             "error",
             "always"
         ],
-        "max-len": [
-            "error",
-            {
-                "code": 140,
-                "ignoreUrls": true,
-                "ignoreTemplateLiterals": true
-            }
-        ],
-        "no-unreachable-loop": [
-            "error"
-        ],
-        "block-scoped-var": "error",
-        "default-case": "error",
-        "eqeqeq": "error",
-        "dot-notation": "error",
-        "no-else-return": "error",
-        "no-multi-spaces": "error",
-        "no-magic-numbers": [
-            "error",
-            {
-                "ignore": [
-                    0
-                ],
-                "ignoreDefaultValues": true
-            }
-        ],
-        "no-useless-return": "error",
-        "yoda": "error",
-        "no-undef-init": "error",
-        "capitalized-comments": [
-            "error"
-        ],
-        "comma-spacing": [
-            "error",
-            {
-                "before": false,
-                "after": true
-            }
-        ],
-        "array-bracket-newline": [
-            "error",
-            {
-                "multiline": true
-            }
-        ],
-        "brace-style": "error",
-        "camelcase": "error",
-        "keyword-spacing": [
-            "error",
-            {
-                "before": true
-            }
-        ],
-        "key-spacing": [
-            "error",
-            {
-                "afterColon": true
-            }
-        ],
-        "one-var": [
-            "error",
-            "never"
-        ],
-        "no-var": "error",
-        "prefer-const": "error"
+        "react/prop-types": 0
     }
 }
