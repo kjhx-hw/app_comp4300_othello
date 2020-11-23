@@ -24,7 +24,7 @@ function menuBuilder() {
           click() {
             openNewGitHubIssue({
               user: 'kjhx',
-              repo: 'app_comp4300_spades',
+              repo: 'app_comp4300_othello',
               body: debugInfo()
             });
           }
