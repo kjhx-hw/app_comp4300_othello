@@ -4,7 +4,6 @@ import GameOver from '../components/GameOver/GameOver';
 import './App.css';
 
 class App extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -16,7 +15,6 @@ class App extends Component {
     }
 
     render() {
-
         let game = this.state.status === 'active' ? <Game end={this.endGame.bind(this)} /> : '';
         let gameOver = this.state.status === 'over' ? <GameOver
             winner={this.state.winner}

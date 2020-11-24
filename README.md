@@ -21,7 +21,7 @@ This project was written for COMP 4300 at Harding University. The boilerplate fo
 You should now see the application running on your desktop.
 
 ### Contributing
-See `docs/CONTRIBUTING.md`.
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## Authors
 * Kyle Huggins ([@kjhx][kyle-github])
