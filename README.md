@@ -3,7 +3,7 @@
 
 ## About
 ### Game
-<!-- TODO: About the game -->
+For information on how to play the game, see [docs/OTHELLO.md](docs/OTHELLO.md)
 
 This project was written for COMP 4300 at Harding University. The boilerplate for this project was created from following this guide at [freeCodeCamp][electron-react]. The base two-player game, along with its user interface, was created by [matfish2][game-ui-source].
 
