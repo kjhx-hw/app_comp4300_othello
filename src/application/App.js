@@ -15,8 +15,8 @@ class App extends Component {
     }
 
     render() {
-        let game = this.state.status === 'active' ? <Game end={this.endGame.bind(this)} /> : '';
-        let gameOver = this.state.status === 'over' ? <GameOver
+        const game = this.state.status === 'active' ? <Game end={this.endGame.bind(this)} /> : '';
+        const gameOver = this.state.status === 'over' ? <GameOver
             winner={this.state.winner}
             restart={this.restartGame.bind(this)}
             white={this.state.whiteScore}

@@ -4,14 +4,14 @@ import Score from '../Score/Score';
 import './Game.css';
 
 const directions = [
-    [0,1], // right
-    [0,-1], // left
-    [-1,0], // up
-    [1,0], // down
-    [1,1], // diagonal - down right
-    [-1, 1], // diagonal - up right                        
-    [-1,-1], // diagonal - up left
-    [1,-1] // diagonal - down left            
+    [0, 1], // Right
+    [0, -1], // Left
+    [-1, 0], // Up
+    [1, 0], // Down
+    [1, 1], // Diagonal - down right
+    [-1, 1], // Diagonal - up right                        
+    [-1, -1], // Diagonal - up left
+    [1, -1] // Diagonal - down left            
 ];
 
 class Game extends Component {
@@ -21,10 +21,10 @@ class Game extends Component {
         
         this.state = {
             board: this.createBoard(),
-            currentPlayer:'white',
-            winner:null,
+            currentPlayer: 'white',
+            winner: null,
             lostTurn: false,
-            newestDisk:null
+            newestDisk: null
         };
         
     }
@@ -49,8 +49,8 @@ class Game extends Component {
     }
         
     winner() {
-        var whiteScore = this.score('white');
-        var blackScore = this.score('black');
+        const whiteScore = this.score('white');
+        const blackScore = this.score('black');
 
         if (whiteScore > blackScore) return 'white';
 
@@ -66,7 +66,7 @@ class Game extends Component {
     }
 
     score(player) {
-        var score = 0;
+        let score = 0;
             
         this.state.board.forEach(row=>{
             row.forEach(cell=>{
@@ -79,9 +79,9 @@ class Game extends Component {
         
     calculateAllowedCells() {
             
-        var b = this.state.board;
-        var allowedCellsCount = 0;
-        var canReverse;
+        const b = this.state.board;
+        let allowedCellsCount = 0;
+        let canReverse;
             
         for (let x=0; x<8;x++) {
             for (let y=0; y<8; y++) {
@@ -93,18 +93,18 @@ class Game extends Component {
         }
             
         this.setState({
-            board:b
+            board: b
         });
             
         return allowedCellsCount;
     }
         
-    /** create the initial board state */
+    /** Create the initial board state */
     createBoard() {
-        let board = new Array(8);
+        const board = new Array(8);
         let rowPos;
             
-        for(let x = 0; x < board.length;x++) {
+        for (let x = 0; x < board.length;x++) {
             board[x] = new Array(8);
             rowPos = x * 8;
             for (let y = 0; y < board[x].length; y++) {
@@ -112,7 +112,7 @@ class Game extends Component {
                 board[x][y] = {
                     id: rowPos + (y+1),
                     disk: this.initialDisk(x+1, y+1),
-                    canReverse:[]
+                    canReverse: []
                 };
             }
         }
@@ -120,7 +120,7 @@ class Game extends Component {
         return board;
     }
         
-    /** set initial disks black: black at 4,4;5,5; white at 4,5; 5,4; */
+    /** Set initial disks black: black at 4,4;5,5; white at 4,5; 5,4; */
     initialDisk(x, y) {
         if ((x===4 && y===4) || (x===5 && y===5)) return 'black';
         if ((x===4 && y===5) || (x===5 && y===4)) return 'white';
@@ -129,11 +129,11 @@ class Game extends Component {
         
     canReverse(x, y) {
             
-        var canReverse = [];
-        var b = this.state.board;
-        var X,Y, distance, cells;
+        const canReverse = [];
+        const b = this.state.board;
+        let X; let Y; let distance; let cells;
             
-        // cell is already occupied
+        // Cell is already occupied
         if (b[x][y].disk) return [];
             
         directions.forEach(dir=>{
@@ -146,11 +146,11 @@ class Game extends Component {
             do {
                 X+= dir[0];
                 Y+= dir[1];
-                cells.push({X,Y});    
+                cells.push({X, Y});    
                 distance++;
-            } while (this.inBoard(X,Y) && this.hasOpponentsColor(X,Y));
+            } while (this.inBoard(X, Y) && this.hasOpponentsColor(X, Y));
                 
-            if (distance >=2 && this.inBoard(X,Y) && b[X][Y].disk===this.state.currentPlayer) {
+            if (distance >=2 && this.inBoard(X, Y) && b[X][Y].disk===this.state.currentPlayer) {
                 canReverse.push(cells);
             }
         });
@@ -163,7 +163,7 @@ class Game extends Component {
         return x>=0 && x<=7 && y>=0 && y<=7;
     }
         
-    hasOpponentsColor(x,y) {
+    hasOpponentsColor(x, y) {
         return this.state.board[x][y].disk===this.opponent();
     }
         
@@ -173,7 +173,7 @@ class Game extends Component {
         
     reverse(x, y) { 
             
-        var b = this.state.board;
+        const b = this.state.board;
             
         if (!b[x][y].canReverse || !b[x][y].canReverse.length) return;
             
@@ -181,15 +181,15 @@ class Game extends Component {
         b[x][y].canReverse.forEach(cell=>b[cell.X][cell.Y].disk = this.state.currentPlayer);
 
         this.setState({
-            board:b,
-            newestDisk:[x,y]
-        },()=>{
+            board: b,
+            newestDisk: [x, y]
+        }, ()=>{
             this.setState((prevState)=>{
                 return {
                     currentPlayer: prevState.currentPlayer==='white'?'black':'white',
                 };
             }, ()=>{
-                var allowedCellsCount = this.calculateAllowedCells();
+                let allowedCellsCount = this.calculateAllowedCells();
 
                 if (!allowedCellsCount) { // PLAYER HAS NO MOVES
                         
@@ -214,12 +214,12 @@ class Game extends Component {
 
     getCurrentPlayer() {
 
-        // check whether to opponent has any moves. Count only, without assigning the actual cells
-        var allowedCellsCount = this.calculateAllowedCells(); 
+        // Check whether to opponent has any moves. Count only, without assigning the actual cells
+        const allowedCellsCount = this.calculateAllowedCells(); 
             
         if (!allowedCellsCount) {
             this.setState({
-                lostTurn:true
+                lostTurn: true
             });
     
             return this.state.currentPlayer;

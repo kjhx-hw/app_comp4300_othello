@@ -11,7 +11,7 @@ class Disk extends Component {
 
     color() {
         return {
-            backgroundColor:this.props.color
+            backgroundColor: this.props.color
         };
     }
 }

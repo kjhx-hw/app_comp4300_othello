@@ -14,7 +14,7 @@ class Cell extends Component {
       
     render() {
         return (
-            <td className={this.classes()} onMouseEnter={this.setHoverState.bind(this, true)} onMouseLeave={this.setHoverState.bind(this,false)} onClick={this.reverse.bind(this)}>{this.cellContent()}</td>
+            <td className={this.classes()} onMouseEnter={this.setHoverState.bind(this, true)} onMouseLeave={this.setHoverState.bind(this, false)} onClick={this.reverse.bind(this)}>{this.cellContent()}</td>
         );
     }
 
@@ -34,7 +34,7 @@ class Cell extends Component {
 
     classes() {
         let cls = 'Cell ';
-        let cell = this.props.data;
+        const cell = this.props.data;
         cls+= cell.disk?'Cell--occupied':'Cell--vacant';
         if (cell.canReverse.length) cls+=' Cell--allowed';
         if (this.isNewest()) cls+=' Cell--newest';
@@ -43,7 +43,7 @@ class Cell extends Component {
     }
 
     diskColor() {
-        var cell = this.props.data;
+        const cell = this.props.data;
         
         if (cell.disk) return cell.disk;
 
@@ -56,8 +56,8 @@ class Cell extends Component {
 
         if (this.props.data.canReverse.length===0) return;
 
-        var x = this.props.position[0];
-        var y = this.props.position[1];
+        const x = this.props.position[0];
+        const y = this.props.position[1];
         this.props.reverse(x, y);
     }
 

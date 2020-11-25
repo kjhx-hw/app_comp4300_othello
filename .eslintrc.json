@@ -42,6 +42,54 @@
             "error",
             "always"
         ],
-        "react/prop-types": 0
+        "react/prop-types": 0,
+        "no-unreachable-loop": [
+            "error"
+        ],
+        "block-scoped-var": "error",
+        "default-case": "error",
+        "eqeqeq": "error",
+        "dot-notation": "error",
+        "no-else-return": "error",
+        "no-multi-spaces": "error",
+        "no-useless-return": "error",
+        "yoda": "error",
+        "no-undef-init": "error",
+        "capitalized-comments": [
+            "error"
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "array-bracket-newline": [
+            "error",
+            {
+                "multiline": true
+            }
+        ],
+        "brace-style": "error",
+        "camelcase": "error",
+        "keyword-spacing": [
+            "error",
+            {
+                "before": true
+            }
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "afterColon": true
+            }
+        ],
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "no-var": "error",
+        "prefer-const": "error"
     }
 }
