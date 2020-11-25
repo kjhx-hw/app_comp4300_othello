@@ -42,6 +42,9 @@ app.on('window-all-closed', function () {
 const menuTemplate = Menu.buildFromTemplate([
     appMenu(),
     {
+        role: 'fileMenu'
+    },
+    {
         label: 'Debug',
         submenu: [
             {
