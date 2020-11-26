@@ -45,7 +45,27 @@ const menuTemplate = Menu.buildFromTemplate([
     role: 'fileMenu'
   },
   {
-    label: 'Game'
+    label: 'Game',
+    submenu: [
+      {
+        label: 'Restart',
+        role: 'reload'
+      }
+    ]
+  },
+  {
+    label: 'View',
+    submenu: [
+      {
+        role: 'resetZoom'
+      },
+      {
+        role: 'zoomIn'
+      },
+      {
+        role: 'zoomOut'
+      }
+    ]
   },
   {
     label: 'Debug',
@@ -61,10 +81,16 @@ const menuTemplate = Menu.buildFromTemplate([
         }
       },
       {
-        label: 'Open Log Directory'
+        type: 'separator'
       },
       {
-        label: 'Reload'
+        role: 'reload'
+      },
+      {
+        role: 'forceReload'
+      },
+      {
+        role: 'toggleDevTools'
       }
     ]
   }
