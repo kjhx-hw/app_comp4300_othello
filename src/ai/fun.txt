@@ -1,0 +1,63 @@
+/* Vaishnavi Sannidhanam and Muthukaruppan Annamalai on Othello heuristics
+    link: https://courses.cs.washington.edu/courses/cse573/04au/Project/mini1/RUSSIA/Final_Paper.pdf
+        currently asking Baird if we are allowed to use these exact funtions in our code
+        otherwise we just need to adopt the principles
+
+    COIN PARITY 
+    CP = 100 * (MaxPlayerCoins - MinPlayerCoins)/(MaxPlayerCoins + MinPlayerCoins);
+
+    ACTUAL MOBILITY (calculateAllowedCells?)
+    if((MaxActualMobilityVal + MinActualMobilityVal) !=0) {
+        ActualMobilityVal =  100 * (MaxActualMobilityVal – MinActualMobilityVal)/ 
+        (MaxActualMobilityVal + MinActualMobilityVal);  
+    } else {
+        ActualMobilityVal = 0 
+    } 
+    POTENTIAL MOBILITY - The mobility after a few moves (actual mobility of later moves?)
+
+    CORNERS
+    if((Max Player Corner Value + Min Player Corner Value) !=0)
+        Corner Heuristic Value =  100* (Max Player Corner Heurisitc Value –Min Player Corner Heuristic Value)/
+        (Max Player Corner Heuristic Value + Min Player Corner Heurisitc Value)
+    else
+        Corner Heuristic Value = 0
+
+    STABILITY
+    if((Max Player Stability Value+ Min Player Stability Value) !=0)
+        Stability Heuristic Value =  100* (Max Player Stability Value–Min Player Stability Value)/
+        (Max Player Stability Value+ Min Player Stability Value)
+    else Stability Heuristic Value = 0
+    */
+
+
+    //!!!CURRENT CONFIGURATION DOES NOT TAKE INTO ACCOUNT IF A PLAYER IS SKIPPED!!!
+    //Recommendation: a list of some sort that holds the value of the heuristic as well as whether or not a player can play the next turn
+    //Unsure of how to work into heuristic?
+    /*minimax(position, maxDepth, alpha, beta, maxPlayer) {
+        if (depth == 0 || GAMEOVER) {
+            return EVALUATIONOFPOSITION
+        }
+        if (maxPlayer) {
+            maxEvaluation = -infinity;
+            FOR EACH CHILD OF POSITION {
+                evaluation = minimax(CHILD, depth - 1, alpha, beta, false);
+                maxEvaluation = max(maxEvaluation, evaluation);
+                alpha = max(alpha, eval);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return maxEval;
+        } else {
+            minEval = infinity;
+            FOR EACH CHILD OF POSITION {
+                evaluation = minimax(CHILD, depth - 1, alpha, beta, true);
+                minEvaluation = min(minEval, eval);
+                beta = min(beta, eval)
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            return minEval;
+        }
+    }*/
