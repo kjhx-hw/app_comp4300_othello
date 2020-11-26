@@ -15,11 +15,12 @@
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
     "plugins": [
