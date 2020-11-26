@@ -7,26 +7,26 @@ const client = new net.Socket();
 
 let startedElectron = false;
 const tryConnection = () => client.connect({port: port}, () => {
-    client.end();
-    if(!startedElectron) {
-        console.log('starting electron');
-        startedElectron = true;
-        const exec = require('child_process').exec;
-        const electron = exec('npm run electron');
-        electron.stdout.on('data', function(data) {
-            console.log('stdout: ' + data.toString());
-        });
-    }
+  client.end();
+  if (!startedElectron) {
+    console.log('starting electron');
+    startedElectron = true;
+    const exec = require('child_process').exec;
+    const electron = exec('npm run electron');
+    electron.stdout.on('data', function(data) {
+      console.log('stdout: ' + data.toString());
+    });
+  }
 }
 );
 
 tryConnection();
 
 client.on('error', (error) => {
-    if (error) {
-        console.warn(`Could not connect: ${error.message}, retrying in 1s...`);
-    }
+  if (error) {
+    console.warn(`Could not connect: ${error.message}, retrying in 1s...`);
+  }
 
-    setTimeout(tryConnection, 1000);
+  setTimeout(tryConnection, 1000);
 });
 
