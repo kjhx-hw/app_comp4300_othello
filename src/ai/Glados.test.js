@@ -1,4 +1,5 @@
-import Glados from '../ai/Glados'
+import Glados from '../ai/Glados';
+import BigTestArray from './BigTestArray';
 
 const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -20,6 +21,17 @@ const BOARD_RAND = [
   [1, 1, 1, 1, 2, 2, 2, 2],
   [1, 1, 1, 1, 2, 2, 2, 2],
   [1, 1, 1, 1, 2, 2, 2, 2]
+];
+
+const BOARD_TEST = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 2, 2, 2, 0, 0, 0],
+  [0, 0, 0, 2, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 const resetGlados = () => {
@@ -57,4 +69,8 @@ it('getScore should return number of captured tiles', () => {
 it('getCorners should return corner values', () => {
   const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
   expect(Glados.getCorners()).toEqual(cornersObject);
+});
+
+it('translateBoard should return 2D array', () => {
+  expect(Glados.translateBoard(BigTestArray)).toEqual(BOARD_TEST);
 });

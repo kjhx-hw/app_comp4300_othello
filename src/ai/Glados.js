@@ -99,6 +99,31 @@ class Glados {
       }
     }
   }
+
+  static translateBoard(board) {
+    // Translates actual game board into our 2D array structure
+    let newBoard = this.getBigArray();
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        switch (board[i][j].disk) {
+          case 'black':
+            newBoard[i][j] = 1;
+            break;
+
+          case 'white':
+            newBoard[i][j] = 2;
+            break;
+        
+          default:
+            newBoard[i][j] = 0;
+            break;
+        }
+      }
+    }
+    
+    return newBoard;
+  }
 }
 
 export default Glados;
