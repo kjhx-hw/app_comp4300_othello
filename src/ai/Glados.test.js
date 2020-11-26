@@ -37,7 +37,7 @@ const BOARD_TEST = [
 const resetGlados = () => {
   Glados.initFlag = false;
   Glados.initBoards();
-}
+};
 
 it('initializes the gameboard', () => {
   Glados.initBoards();
@@ -47,6 +47,12 @@ it('initializes the gameboard', () => {
 it('initializes the stability tracker', () => {
   resetGlados();
   expect(Glados.stabTracker).toEqual(BOARD_EMPTY);
+});
+
+it('setGameboard should not update on invalid data', () => {
+  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
+  Glados.setGameboard(BigTestArray);
+  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
 });
 
 it('setGameboard updates the gameboard', () => {

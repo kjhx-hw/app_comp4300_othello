@@ -2,13 +2,13 @@ const TILE = {
   'EMPTY': 0,
   'BLACK': 1,
   'WHITE': 2
-}
+};
 
 const STATUS = {
   'STABLE': 0,
   'NEARSTAB': 1,
   'UNSTABLE': 2
-}
+};
 
 class Glados {
   static gameboard = this.getBigArray();
@@ -68,20 +68,17 @@ class Glados {
     if (board.length === 8) {
       for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
-          if (board[i].length !== 8) {
+          if (board[i].length !== 8 || isNaN(board[i][j])) {
             validFlag = false;
             break;
           }
         }
       }
-    } else {
-      console.error('Input of wrong size. Could not set.');
     }
 
     if (validFlag) {
       Glados.gameboard = board;
-    } else {
-      console.error('Input of wrong size. Could not set.');
+      this.updatePlayerTiles();
     }
   }
 
@@ -102,26 +99,26 @@ class Glados {
 
   static translateBoard(board) {
     // Translates actual game board into our 2D array structure
-    let newBoard = this.getBigArray();
+    const newBoard = this.getBigArray();
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
         switch (board[i][j].disk) {
-          case 'black':
-            newBoard[i][j] = 1;
-            break;
+        case 'black':
+          newBoard[i][j] = 1;
+          break;
 
-          case 'white':
-            newBoard[i][j] = 2;
-            break;
+        case 'white':
+          newBoard[i][j] = 2;
+          break;
         
-          default:
-            newBoard[i][j] = 0;
-            break;
+        default:
+          newBoard[i][j] = 0;
+          break;
         }
       }
     }
-    
+
     return newBoard;
   }
 }
