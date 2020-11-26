@@ -78,24 +78,22 @@ class Game extends Component {
   }
         
   calculateAllowedCells() {
-            
     const b = this.state.board;
     let allowedCellsCount = 0;
     let canReverse;
-            
+
     for (let x=0; x<8;x++) {
       for (let y=0; y<8; y++) {
-        canReverse = this.canReverse(x, y);         
-        b[x][y].canReverse = canReverse; 
-                    
+        canReverse = this.canReverse(x, y);
+        b[x][y].canReverse = canReverse;
         if (canReverse.length) allowedCellsCount++;
       }
     }
-            
+
     this.setState({
       board: b
     });
-            
+
     return allowedCellsCount;
   }
         
