@@ -34,7 +34,6 @@ class Game extends Component {
   }
     
   render() {
-                
     return (
       <div className="Game container">
         
@@ -45,9 +44,10 @@ class Game extends Component {
           <Board board={this.state.board} newest={this.state.newestDisk} reverse={this.reverse.bind(this)} player={this.state.currentPlayer}/>
           <Score player="black" score={this.score('black')}/>                
         </div> 
-      </div>);
+      </div>
+    );
   }
-        
+
   winner() {
     const whiteScore = this.score('white');
     const blackScore = this.score('black');
