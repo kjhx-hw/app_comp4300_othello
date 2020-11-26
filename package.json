@@ -2,7 +2,7 @@
   "name": "app_comp4300_othello",
   "productName": "Othello",
   "description": "Othello with a splash of AI. Written for COMP 4300.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "author": "Kyle Huggins (http://huggins.io/)",
   "contributors": [
@@ -17,6 +17,7 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "electron": "^11.0.2",
+    "electron-builder": "^22.9.1",
     "eslint": "^7.14.0",
     "eslint-plugin-react": "^7.21.5",
     "foreman": "^3.0.1",
@@ -28,7 +29,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
-  "main": "src/electron-start.js",
+  "main": "public/electron.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -36,7 +37,10 @@
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
     "electron": "electron .",
-    "dev": "nf start -p 3000"
+    "dev": "nf start -p 3000",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "postinstall": "install-app-deps"
   },
   "browserslist": {
     "production": [
@@ -49,5 +53,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "build": {
+    "appId": "edu.harding.ai.hugginsjudd.othello",
+    "productName": "Othello",
+    "directories": {
+      "buildResources": "public"
+    }
   }
 }
