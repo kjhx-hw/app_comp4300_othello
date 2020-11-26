@@ -10,6 +10,25 @@ const STATUS = {
   'UNSTABLE': 2
 };
 
+// Helper functions
+function isValidArray(board) {
+  let flag = true;
+  if (board.length === 8) {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i].length !== 8 || isNaN(board[i][j])) {
+          flag = false;
+          break;
+        }
+      }
+    }
+  }
+
+  return flag;
+}
+
+
+// AI class
 class Glados {
   static gameboard = this.getBigArray();
   static stabTracker = this.getBigArray();
@@ -61,24 +80,17 @@ class Glados {
   }
 
   static setGameboard(board) {
-    // Input `board` is a 2D array
-    let validFlag = true;
-
-    // Check if the board is the correct size
-    if (board.length === 8) {
-      for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[i].length; j++) {
-          if (board[i].length !== 8 || isNaN(board[i][j])) {
-            validFlag = false;
-            break;
-          }
-        }
-      }
-    }
-
-    if (validFlag) {
+    // Input `board` is a 2D array of ints
+    if (isValidArray(board)) {
       Glados.gameboard = board;
       this.updatePlayerScore();
+    }
+  }
+
+  static setStability(board) {
+    // Input `board` is a 2D array of ints
+    if (isValidArray(board)) {
+      Glados.stabTracker = board;
     }
   }
 
