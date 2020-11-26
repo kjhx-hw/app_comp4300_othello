@@ -61,10 +61,10 @@ it('setGameboard updates the gameboard', () => {
   expect(Glados.gameboard).toEqual(BOARD_RAND);
 });
 
-it('updatePlayerTiles should recount', () => {
-  Glados.updatePlayerTiles();
-  expect(Glados.playerTiles.white).not.toEqual(0);
-  expect(Glados.playerTiles.black).not.toEqual(0);
+it('updatePlayerScore should recount', () => {
+  Glados.updatePlayerScore();
+  expect(Glados.playerScore.white).not.toEqual(0);
+  expect(Glados.playerScore.black).not.toEqual(0);
 });
 
 it('getScore should return number of captured tiles', () => {

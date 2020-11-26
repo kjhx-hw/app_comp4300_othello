@@ -14,7 +14,7 @@ class Glados {
   static gameboard = this.getBigArray();
   static stabTracker = this.getBigArray();
   static initFlag = false;
-  static playerTiles = {
+  static playerScore = {
     black: 0,
     white: 0
   }
@@ -24,7 +24,7 @@ class Glados {
   }
 
   static getScore() {
-    return { black: this.playerTiles.black, white: this.playerTiles.white };
+    return { black: this.playerScore.black, white: this.playerScore.white };
   }
 
   static getStability() {
@@ -78,20 +78,20 @@ class Glados {
 
     if (validFlag) {
       Glados.gameboard = board;
-      this.updatePlayerTiles();
+      this.updatePlayerScore();
     }
   }
 
-  static updatePlayerTiles() {
-    this.playerTiles.white = 0;
-    this.playerTiles.black = 0;
+  static updatePlayerScore() {
+    this.playerScore.white = 0;
+    this.playerScore.black = 0;
 
     for (let i = 0; i < this.gameboard.length; i++) {
       for (let j = 0; j < this.gameboard[i].length; j++) {
         if (this.gameboard[i][j] === TILE.WHITE) {
-          this.playerTiles.white++;
+          this.playerScore.white++;
         } else if (this.gameboard[i][j] === TILE.BLACK) {
-          this.playerTiles.black++;
+          this.playerScore.black++;
         }
       }
     }
@@ -105,15 +105,15 @@ class Glados {
       for (let j = 0; j < board[i].length; j++) {
         switch (board[i][j].disk) {
         case 'black':
-          newBoard[i][j] = 1;
+          newBoard[i][j] = TILE.BLACK;
           break;
 
         case 'white':
-          newBoard[i][j] = 2;
+          newBoard[i][j] = TILE.WHITE;
           break;
         
         default:
-          newBoard[i][j] = 0;
+          newBoard[i][j] = TILE.EMPTY;
           break;
         }
       }
