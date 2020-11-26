@@ -13,6 +13,7 @@ const STATUS = {
 class Glados {
   static gameboard = this.getBigArray();
   static stabTracker = this.getBigArray();
+  static initFlag = false;
   static playerTiles = {
     black: 0,
     white: 0
@@ -22,16 +23,31 @@ class Glados {
     return [[], [], [], [], [], [], [], []];
   }
 
+  static getScore() {
+    return { black: this.playerTiles.black, white: this.playerTiles.white };
+  }
+
+  static getStability() {
+    return this.stabTracker;
+  }
+
+  static getCorners() {
+    return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
+  }
+
   static initBoards() {
-    console.log('Initializing game & stability boards');
+    if (this.initFlag) {
+      console.warn('Boards already initialized!');
+    } else {
+      this.initFlag = true;
+    }
+
     for (let i = 0; i <= 7; i++) {
       for (let j = 0; j <= 7; j++) {
         this.gameboard[i][j] = TILE.EMPTY;
         this.stabTracker[i][j] = STATUS.STABLE;
       }
     }
-
-    this.visGameboard();
   }
 
   static visGameboard() {
@@ -46,7 +62,27 @@ class Glados {
 
   static setGameboard(board) {
     // Input `board` is a 2D array
-    console.log('Setting gameboard to new values');
+    let validFlag = true;
+
+    // Check if the board is the correct size
+    if (board.length === 8) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i].length !== 8) {
+            validFlag = false;
+            break;
+          }
+        }
+      }
+    } else {
+      console.error('Input of wrong size. Could not set.');
+    }
+
+    if (validFlag) {
+      Glados.gameboard = board;
+    } else {
+      console.error('Input of wrong size. Could not set.');
+    }
   }
 
   static updatePlayerTiles() {
@@ -63,21 +99,6 @@ class Glados {
       }
     }
   }
-
-  static getPlayerTiles(tile) {
-    // Input `tile` has to be of type TILE.BLACK | TILE.WHITE
-    switch (tile) {
-      case TILE.BLACK:
-        return this.playerTiles.black;
-        break;
-
-      case TILE.WHITE:
-        return this.playerTiles.white;
-        break;
-    
-      default:
-        return -1;
-        break;
-    }
-  }
 }
+
+export default Glados;
