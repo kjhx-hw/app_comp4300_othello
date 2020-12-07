@@ -5,12 +5,16 @@ const TILE = {
 };
 
 const STATUS = {
-  'STABLE': 0,
-  'NEARSTAB': 1,
-  'UNSTABLE': 2
+  'LOSE_GAME': Number.NEGATIVE_INFINITY,
+  'LOSE_CORNER': -9,
+  'UNSTABLE': -1,
+  'NEARSTAB': 0,
+  'STABLE': 1,
+  'WIN_CORNER': 9,
+  'WIN_GAME': Number.POSITIVE_INFINITY
 };
 
-// Helper functions
+// Helper functions for AI class
 function isValidArray(board) {
   let flag = true;
   if (board.length === 8) {
@@ -132,6 +136,10 @@ class Glados {
     }
 
     return newBoard;
+  }
+
+  static getLegalMoves() {
+    // Gets a list of boards
   }
 }
 
