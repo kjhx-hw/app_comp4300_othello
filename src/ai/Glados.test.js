@@ -1,4 +1,4 @@
-import Glados from '../ai/Glados';
+import { Glados, Wheatley } from './Glados';
 import BigTestArray from './BigTestArray';
 
 const BOARD_EMPTY = [
@@ -12,7 +12,18 @@ const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-const BOARD_RAND = [
+const BOARD_STABLE = [
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1]
+];
+
+const BOARD_SPLIT = [
   [1, 1, 1, 1, 2, 2, 2, 2],
   [1, 1, 1, 1, 2, 2, 2, 2],
   [1, 1, 1, 1, 2, 2, 2, 2],
@@ -34,49 +45,61 @@ const BOARD_TEST = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-const resetGlados = () => {
-  Glados.initFlag = false;
-  Glados.initBoards();
-};
+describe('ai helper', () => {
+  test('isValidArray should return true if array valid', () => {
+    expect(Wheatley.isValidArray(BOARD_SPLIT)).toEqual(true);
+  });
 
-it('initializes the gameboard', () => {
-  Glados.initBoards();
-  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
+  test('isValidArray should return false if array invalid', () => {
+    expect(Wheatley.isValidArray(BigTestArray)).toEqual(false);
+  });
 });
 
-it('initializes the stability tracker', () => {
-  resetGlados();
-  expect(Glados.stabTracker).toEqual(BOARD_EMPTY);
-});
+describe('ai core', () => {
+  beforeAll(() => {
+    Glados.initFlag = false;
+    Glados.initBoards();
+  });
 
-it('setGameboard should not update on invalid data', () => {
-  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
-  Glados.setGameboard(BigTestArray);
-  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
-});
+  it('initializes the gameboard', () => {
+    expect(Glados.gameboard).toEqual(BOARD_EMPTY);
+  });
 
-it('setGameboard updates the gameboard', () => {
-  expect(Glados.gameboard).toEqual(BOARD_EMPTY);
-  Glados.setGameboard(BOARD_RAND);
-  expect(Glados.gameboard).toEqual(BOARD_RAND);
-});
+  it('initializes the stability tracker', () => {
+    expect(Glados.stabTracker).toEqual(BOARD_STABLE);
+  });
 
-it('updatePlayerScore should recount', () => {
-  Glados.updatePlayerScore();
-  expect(Glados.playerScore.white).not.toEqual(0);
-  expect(Glados.playerScore.black).not.toEqual(0);
-});
+  it('setGameboard should not update on invalid data', () => {
+    expect(Glados.gameboard).toEqual(BOARD_EMPTY);
+    expect(() => {
+      Glados.setGameboard(BigTestArray);
+    }).toThrowError(TypeError);
+  });
 
-it('getScore should return number of captured tiles', () => {
-  const scoreObject = { black: 32, white: 32 };
-  expect(Glados.getScore()).toEqual(scoreObject);
-});
+  it('setGameboard updates the gameboard', () => {
+    expect(Glados.gameboard).toEqual(BOARD_EMPTY);
+    Glados.setGameboard(BOARD_SPLIT);
+    expect(Glados.gameboard).toEqual(BOARD_SPLIT);
+  });
 
-it('getCorners should return corner values', () => {
-  const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
-  expect(Glados.getCorners()).toEqual(cornersObject);
-});
+  it('updatePlayerScore should recount', () => {
+    Glados.updatePlayerScore();
+    expect(Glados.playerScore.white).not.toEqual(0);
+    expect(Glados.playerScore.black).not.toEqual(0);
+  });
 
-it('translateBoard should return 2D array', () => {
-  expect(Glados.translateBoard(BigTestArray)).toEqual(BOARD_TEST);
-});
+  it('getScore should return number of captured tiles', () => {
+    const scoreObject = { black: 32, white: 32 };
+    expect(Glados.getScore()).toEqual(scoreObject);
+  });
+
+  it('getCorners should return corner values', () => {
+    const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
+    expect(Glados.getCorners()).toEqual(cornersObject);
+  });
+
+  it('translateIn should return 2D array', () => {
+    Glados.setGameboard(BOARD_TEST);
+    expect(Glados.translateIn(BigTestArray)).toEqual(BOARD_TEST);
+  });
+})
