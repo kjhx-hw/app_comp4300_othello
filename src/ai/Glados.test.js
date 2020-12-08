@@ -46,22 +46,30 @@ const BOARD_TEST = [
 ];
 
 describe('ai helper', () => {
-  test('isValidArray should return true if array valid', () => {
+  it('getBigArray should get a big array', () => {
+    expect(Wheatley.getBigArray()).toEqual([[], [], [], [], [], [], [], []]);
+  });
+
+  it('isValidArray should return true if array valid', () => {
     expect(Wheatley.isValidArray(BOARD_SPLIT)).toEqual(true);
   });
 
-  test('isValidArray should return false if array invalid', () => {
+  it('isValidArray should return false if array invalid', () => {
     expect(Wheatley.isValidArray(BigTestArray)).toEqual(false);
   });
 
   it('translateIn should return 2D array', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
+
+  fit('translateOut should return the correct BigTestArray', () => {
+    console.log(Wheatley.translateOut(BOARD_TEST));
+    expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
+  });
 });
 
 describe('ai core', () => {
   beforeAll(() => {
-    Glados.initFlag = false;
     Glados.initBoards();
   });
 

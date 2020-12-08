@@ -14,6 +14,17 @@ const STATUS = {
   'WIN_GAME': Number.POSITIVE_INFINITY
 };
 
+const MOVE = {
+  'RIGHT': [0, 1],
+  'LEFT': [0, -1],
+  'UP': [-1, 0],
+  'DOWN': [1, 0],
+  'DOWN_RIGHT': [1, 1],
+  'UP_RIGHT': [-1, 1],
+  'UP_LEFT': [-1, -1],
+  'DOWN_LEFT': [1, -1]
+}
+
 // Helper functions for AI class
 class Wheatley {
   // Var: none
@@ -69,8 +80,31 @@ class Wheatley {
     return newBoard;
   }
 
-  static translateOut() {
-    // TODO
+  // Var: board: Array<Array<number>>
+  // Dsc: Translates our 2d array of numbers into the game's board array
+  // Out: Object of type BigTestArray
+  static translateOut(board) {
+    const outArray = this.getBigArray();
+    let currentCellId = 1;
+    
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        let newCellObject = { id: currentCellId, disk: '', canReverse: []  };
+        if (board[i][j] === TILE.BLACK) {
+          newCellObject.disk = 'black';
+        } else if (board[i][j] === TILE.WHITE) {
+          newCellObject.disk = 'white';
+        } else {
+          newCellObject.disk = null;
+        }
+
+        currentCellId++;
+        // TODO: calculate canReverse array
+        outArray[i].push(newCellObject);
+      }
+    }
+
+    return outArray;
   }
 }
 
@@ -182,8 +216,8 @@ class Glados {
 
   // Var: TODO
   // Dsc: TODO
-  // Out: TODO
-  static getLegalMoves() {
+  // Out: Array of boards representing every possible legal move.
+  static getLegalMoves(board) {
     // TODO
   }
 }
