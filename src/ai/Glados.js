@@ -15,20 +15,22 @@ const STATUS = {
 };
 
 // Helper functions for AI class
-function isValidArray(board) {
-  let flag = true;
-  if (board.length === 8) {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        if (board[i].length !== 8 || isNaN(board[i][j])) {
-          flag = false;
-          break;
+class Wheatley {
+  static isValidArray(board) {
+    let flag = true;
+    if (board.length === 8) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i].length !== 8 || isNaN(board[i][j])) {
+            flag = false;
+            break;
+          }
         }
       }
     }
-  }
 
-  return flag;
+    return flag;
+  }
 }
 
 
@@ -42,22 +44,37 @@ class Glados {
     white: 0
   }
   
+  // Var: none
+  // Dsc: Returns an array the size of the gameboard
+  // Out: Array<Array<any>>
   static getBigArray() {
     return [[], [], [], [], [], [], [], []];
   }
 
+  // Var: none
+  // Dsc: Returns the scores of each player
+  // Out: { 'black': number, 'white': number }
   static getScore() {
     return { black: this.playerScore.black, white: this.playerScore.white };
   }
 
+  // Var: none
+  // Dsc:
+  // Out:
   static getStability() {
     return this.stabTracker;
   }
 
+  // Var: none
+  // Dsc: Returns the value of each corner tile
+  // Out: { tl: number, tr: number, bl: number, br: number }
   static getCorners() {
     return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
   }
 
+  // Var: none
+  // Dsc: Initializes the boards to equal an Array<Array<number>>
+  // Out: void
   static initBoards() {
     if (this.initFlag) {
       console.warn('Boards already initialized!');
@@ -73,31 +90,47 @@ class Glados {
     }
   }
 
+  // Var: none
+  // Dsc: Prints the gameboard array to the console
+  // Out: void
   static visGameboard() {
     console.log('Current gameboard status:');
     console.table(this.gameboard);
   }
 
+  // Var: none
+  // Dsc: Prints the stability tracking array to the console
+  // Out: void
   static visStabTracker() {
     console.log('Current stability status:');
     console.table(this.stabTracker);
   }
 
+  // Var: board: Array<Array<number>>
+  // Dsc: Sets the static gameboard to `board`
+  // Out: void
   static setGameboard(board) {
-    // Input `board` is a 2D array of ints
-    if (isValidArray(board)) {
+    if (Wheatley.isValidArray(board)) {
       Glados.gameboard = board;
       this.updatePlayerScore();
+    } else {
+      throw new TypeError('Invalid board.');
     }
   }
 
+  // Var: board: Array<Array<number>>
+  // Dsc: Sets the static stability tracker to `board`
+  // Out: void
   static setStability(board) {
     // Input `board` is a 2D array of ints
-    if (isValidArray(board)) {
+    if (Wheatley.isValidArray(board)) {
       Glados.stabTracker = board;
     }
   }
 
+  // Var: none
+  // Dsc: Iterates through the static gameboard array and counts the number of each color of tiles
+  // Out: void
   static updatePlayerScore() {
     this.playerScore.white = 0;
     this.playerScore.black = 0;
@@ -113,24 +146,26 @@ class Glados {
     }
   }
 
-  static translateBoard(board) {
-    // Translates actual game board into our 2D array structure
+  // Var: board: Object
+  // Dsc: Translates the game's board array into our 2d array of numbers
+  // Out: Array<Array<number>>
+  static translateIn(board) {
     const newBoard = this.getBigArray();
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
         switch (board[i][j].disk) {
-        case 'black':
-          newBoard[i][j] = TILE.BLACK;
-          break;
+          case 'black':
+            newBoard[i][j] = TILE.BLACK;
+            break;
 
-        case 'white':
-          newBoard[i][j] = TILE.WHITE;
-          break;
-        
-        default:
-          newBoard[i][j] = TILE.EMPTY;
-          break;
+          case 'white':
+            newBoard[i][j] = TILE.WHITE;
+            break;
+
+          default:
+            newBoard[i][j] = TILE.EMPTY;
+            break;
         }
       }
     }
@@ -138,9 +173,12 @@ class Glados {
     return newBoard;
   }
 
+  // Var: TODO
+  // Dsc: TODO
+  // Out: TODO
   static getLegalMoves() {
-    // Gets a list of boards
+    // TODO
   }
 }
 
-export default Glados;
+module.exports = { Wheatley, Glados };

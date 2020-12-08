@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Glados from '../../ai/Glados';
+import { Glados } from '../../ai/Glados';
 import Board from '../Board/Board';
 import Score from '../Score/Score';
 import './Game.css';
@@ -75,7 +75,7 @@ class Game extends Component {
       });
     });
 
-    Glados.setGameboard(Glados.translateBoard(this.state.board));
+    Glados.setGameboard(Glados.translateIn(this.state.board));
     return score;
   }
         
