@@ -23,7 +23,7 @@ const MOVE = {
   'UP_RIGHT': [-1, 1],
   'UP_LEFT': [-1, -1],
   'DOWN_LEFT': [1, -1]
-}
+};
 
 // Helper functions for AI class
 class Wheatley {
@@ -61,18 +61,12 @@ class Wheatley {
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
-        switch (board[i][j].disk) {
-          case 'black':
-            newBoard[i][j] = TILE.BLACK;
-            break;
-
-          case 'white':
-            newBoard[i][j] = TILE.WHITE;
-            break;
-
-          default:
-            newBoard[i][j] = TILE.EMPTY;
-            break;
+        if (board[i][j].disk === 'black') {
+          newBoard[i][j] = TILE.BLACK;
+        } else if (board[i][j].disk === 'white') {
+          newBoard[i][j] = TILE.WHITE;
+        } else {
+          newBoard[i][j] = TILE.EMPTY;
         }
       }
     }
@@ -89,7 +83,7 @@ class Wheatley {
     
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
-        let newCellObject = { id: currentCellId, disk: '', canReverse: []  };
+        const newCellObject = { id: currentCellId, disk: '', canReverse: [] };
         if (board[i][j] === TILE.BLACK) {
           newCellObject.disk = 'black';
         } else if (board[i][j] === TILE.WHITE) {

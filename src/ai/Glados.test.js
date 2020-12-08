@@ -109,4 +109,4 @@ describe('ai core', () => {
     const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
     expect(Glados.getCorners()).toEqual(cornersObject);
   });
-})
+});
