@@ -53,6 +53,10 @@ describe('ai helper', () => {
   test('isValidArray should return false if array invalid', () => {
     expect(Wheatley.isValidArray(BigTestArray)).toEqual(false);
   });
+
+  it('translateIn should return 2D array', () => {
+    expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
+  });
 });
 
 describe('ai core', () => {
@@ -96,10 +100,5 @@ describe('ai core', () => {
   it('getCorners should return corner values', () => {
     const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
     expect(Glados.getCorners()).toEqual(cornersObject);
-  });
-
-  it('translateIn should return 2D array', () => {
-    Glados.setGameboard(BOARD_TEST);
-    expect(Glados.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
 })

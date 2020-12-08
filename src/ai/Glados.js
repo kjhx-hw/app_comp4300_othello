@@ -16,6 +16,16 @@ const STATUS = {
 
 // Helper functions for AI class
 class Wheatley {
+  // Var: none
+  // Dsc: Returns an array the size of the gameboard
+  // Out: Array<Array<any>>
+  static getBigArray() {
+    return [[], [], [], [], [], [], [], []];
+  }
+
+  // Var: board: any
+  // Dsc: Determines if `board` is a valid 8x8 array of numbers
+  // Out: boolean
   static isValidArray(board) {
     let flag = true;
     if (board.length === 8) {
@@ -31,24 +41,48 @@ class Wheatley {
 
     return flag;
   }
+
+  // Var: board: Object
+  // Dsc: Translates the game's board array into our 2d array of numbers
+  // Out: Array<Array<number>>
+  static translateIn(board) {
+    const newBoard = Wheatley.getBigArray();
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        switch (board[i][j].disk) {
+          case 'black':
+            newBoard[i][j] = TILE.BLACK;
+            break;
+
+          case 'white':
+            newBoard[i][j] = TILE.WHITE;
+            break;
+
+          default:
+            newBoard[i][j] = TILE.EMPTY;
+            break;
+        }
+      }
+    }
+
+    return newBoard;
+  }
+
+  static translateOut() {
+    // TODO
+  }
 }
 
 
 // AI class
 class Glados {
-  static gameboard = this.getBigArray();
-  static stabTracker = this.getBigArray();
+  static gameboard = Wheatley.getBigArray();
+  static stabTracker = Wheatley.getBigArray();
   static initFlag = false;
   static playerScore = {
     black: 0,
     white: 0
-  }
-  
-  // Var: none
-  // Dsc: Returns an array the size of the gameboard
-  // Out: Array<Array<any>>
-  static getBigArray() {
-    return [[], [], [], [], [], [], [], []];
   }
 
   // Var: none
@@ -144,33 +178,6 @@ class Glados {
         }
       }
     }
-  }
-
-  // Var: board: Object
-  // Dsc: Translates the game's board array into our 2d array of numbers
-  // Out: Array<Array<number>>
-  static translateIn(board) {
-    const newBoard = this.getBigArray();
-
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        switch (board[i][j].disk) {
-          case 'black':
-            newBoard[i][j] = TILE.BLACK;
-            break;
-
-          case 'white':
-            newBoard[i][j] = TILE.WHITE;
-            break;
-
-          default:
-            newBoard[i][j] = TILE.EMPTY;
-            break;
-        }
-      }
-    }
-
-    return newBoard;
   }
 
   // Var: TODO
