@@ -92,6 +92,7 @@ class Wheatley {
     const outArray = this.getBigArray();
     let currentCellId = 1;
     
+    // Recreate the Game.js board from our data
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
         const newCellObject = { id: currentCellId, disk: '', canReverse: [] };
@@ -259,6 +260,7 @@ class Glados {
       throw new TypeError('Invalid board.');
     }
 
+    // Collect all posistions for `player`
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
         if (board[i][j] !== TILE.EMPTY && board[i][j] === player) {
@@ -267,14 +269,15 @@ class Glados {
       }
     }
 
+    // Try every possible move on every position to determine legal moves
     posToCheck.forEach(coord => {
-      console.log('checking ' + coord);
       Object.keys(MOVE).forEach(move => {
         const nextBoard = Wheatley.deepCopy(board);
         const currentMove = nextBoard[coord[0]][coord[1]];
         if (Wheatley.inBoard(coord[0] + MOVE[move][0], coord[1] + MOVE[move][1])) {
           const nextMove = nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]];
           const betweenMove = nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]];
+          // If a move is legal, modify `nextBoard` to reflect the state of the game if they took that move
           if (nextMove === TILE.EMPTY && betweenMove !== TILE.EMPTY && betweenMove !== player) {
             nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]] = currentMove;
             nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]] = currentMove;
