@@ -1,6 +1,6 @@
 import { TILE, Glados, Wheatley } from './Glados';
 import BigTestArray from './test_resources/BigTestArray';
-import LegalMovesArray from './test_resources/LegalMovesArray';
+import { LegalMovesArrayBlack, LegalMovesArrayWhite } from './test_resources/LegalMovesArray';
 
 const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,6 +41,17 @@ const BOARD_TEST = [
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 2, 2, 2, 0, 0, 0],
   [0, 0, 0, 2, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+const BOARD_TEST_TWO = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 2, 2, 2, 0, 0, 0],
+  [0, 0, 1, 1, 1, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0]
@@ -121,7 +132,9 @@ describe('ai core', () => {
   });
 
   it('getLegalMoves should return all possible legal moves from a single board', () => {
-    const supposedLegalMoves = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
-    expect(supposedLegalMoves).toEqual(LegalMovesArray);
+    const supposedLegalMovesBlack = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
+    const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_TWO, TILE.WHITE);
+    expect(supposedLegalMovesBlack).toEqual(LegalMovesArrayBlack);
+    expect(supposedLegalMovesWhite).toEqual(LegalMovesArrayWhite);
   });
 });
