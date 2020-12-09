@@ -104,4 +104,4 @@ const LegalMovesArrayWhite = [
   ]
 ];
 
-module.exports = { LegalMovesArrayBlack, LegalMovesArrayWhite }
+module.exports = { LegalMovesArrayBlack, LegalMovesArrayWhite };

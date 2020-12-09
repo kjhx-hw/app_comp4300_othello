@@ -74,7 +74,7 @@ describe('ai helper', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
 
-  xit('translateOut should return the correct BigTestArray', () => {
+  it.skip('translateOut should return the correct BigTestArray', () => {
     // TODO
     // Console.log(Wheatley.translateOut(BOARD_TEST));
     expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
