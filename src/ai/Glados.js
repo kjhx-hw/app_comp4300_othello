@@ -15,6 +15,17 @@ const STATUS = {
 };
 
 const MOVE = {
+  'RIGHT': [0, 2],
+  'LEFT': [0, -2],
+  'UP': [-2, 0],
+  'DOWN': [2, 0],
+  'DOWN_RIGHT': [2, 2],
+  'UP_RIGHT': [-2, 2],
+  'UP_LEFT': [-2, -2],
+  'DOWN_LEFT': [2, -2]
+};
+
+const MOVE_IMMEDIATE = {
   'RIGHT': [0, 1],
   'LEFT': [0, -1],
   'UP': [-1, 0],
@@ -99,6 +110,29 @@ class Wheatley {
     }
 
     return outArray;
+  }
+
+  // Var: x: number, y: number
+  // Dsc: Determines if a set of coordinates is within the bounds of the gameboard
+  // Out: boolean
+  static inBoard(x, y) {
+    return x >= 0 && x <= 7 && y >= 0 && y <= 7;
+  }
+
+  static deepCopy(input) {
+    let outObject, value, key;
+    if (typeof input !== "object" || input === null) {
+      return input;
+    }
+
+    outObject = Array.isArray(input) ? [] : {};
+
+    for (key in input) {
+      value = input[key];
+      outObject[key] = this.deepCopy(value);
+    }
+
+    return outObject;
   }
 }
 
@@ -208,12 +242,44 @@ class Glados {
     }
   }
 
-  // Var: TODO
-  // Dsc: TODO
+  // Var: board: Array<Array<Number>>, player: TILE
+  // Dsc: Gets the board state for every possible legal move for a player.
   // Out: Array of boards representing every possible legal move.
-  static getLegalMoves(board) {
-    // TODO
+  static getLegalMoves(board, player) {
+    const moveCollection = [];
+    const posToCheck = [];
+
+    if (!Wheatley.isValidArray(board)) {
+      throw new TypeError('Invalid board.');
+    }
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] !== TILE.EMPTY && board[i][j] === player) {
+          posToCheck.push([i, j]);
+        }
+      }
+    }
+
+    posToCheck.forEach(coord => {
+      console.log('checking ' + coord);
+      Object.keys(MOVE).forEach(move => {
+        const nextBoard = Wheatley.deepCopy(board);
+        const currentMove = nextBoard[coord[0]][coord[1]];
+        if (Wheatley.inBoard(coord[0] + MOVE[move][0], coord[1] + MOVE[move][1])) {
+          const nextMove = nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]];
+          const betweenMove = nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]];
+          if (nextMove === TILE.EMPTY && betweenMove !== TILE.EMPTY && betweenMove !== player) {
+            nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]] = currentMove;
+            nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]] = currentMove;
+            moveCollection.push(nextBoard);
+          }
+        }
+      });
+    });
+
+    return moveCollection;
   }
 }
 
-module.exports = { Wheatley, Glados };
+module.exports = { TILE, STATUS, MOVE, Wheatley, Glados };

@@ -1,5 +1,6 @@
-import { Glados, Wheatley } from './Glados';
-import BigTestArray from './BigTestArray';
+import { TILE, Glados, Wheatley } from './Glados';
+import BigTestArray from './test_resources/BigTestArray';
+import LegalMovesArray from './test_resources/LegalMovesArray';
 
 const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -62,9 +63,17 @@ describe('ai helper', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
 
-  fit('translateOut should return the correct BigTestArray', () => {
-    console.log(Wheatley.translateOut(BOARD_TEST));
+  it('translateOut should return the correct BigTestArray', () => {
+    // Console.log(Wheatley.translateOut(BOARD_TEST));
     expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
+  });
+
+  it('inBoard should return true if coordinates within bounds', () => {
+    expect(Wheatley.inBoard(3, 2)).toEqual(true);
+  });
+
+  it('inBoard should return false if coordinates outside bounds', () => {
+    expect(Wheatley.inBoard(3, 8)).toEqual(false);
   });
 });
 
@@ -108,5 +117,11 @@ describe('ai core', () => {
   it('getCorners should return corner values', () => {
     const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
     expect(Glados.getCorners()).toEqual(cornersObject);
+  });
+
+  fit('getLegalMoves should return all possible legal moves from a single board', () => {
+    // TODO
+    const supposedLegalMoves = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
+    expect(supposedLegalMoves).toEqual(LegalMovesArray);
   });
 });
