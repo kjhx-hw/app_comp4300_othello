@@ -63,7 +63,8 @@ describe('ai helper', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
 
-  it('translateOut should return the correct BigTestArray', () => {
+  xit('translateOut should return the correct BigTestArray', () => {
+    // TODO
     // Console.log(Wheatley.translateOut(BOARD_TEST));
     expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
   });
@@ -119,8 +120,7 @@ describe('ai core', () => {
     expect(Glados.getCorners()).toEqual(cornersObject);
   });
 
-  fit('getLegalMoves should return all possible legal moves from a single board', () => {
-    // TODO
+  it('getLegalMoves should return all possible legal moves from a single board', () => {
     const supposedLegalMoves = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
     expect(supposedLegalMoves).toEqual(LegalMovesArray);
   });
