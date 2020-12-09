@@ -119,9 +119,15 @@ class Wheatley {
     return x >= 0 && x <= 7 && y >= 0 && y <= 7;
   }
 
+  // Var: input: any
+  // Dsc: recursively deep copy any object. Credit @djD-REK
+  // Out: any
   static deepCopy(input) {
-    let outObject, value, key;
-    if (typeof input !== "object" || input === null) {
+    /* eslint-disable prefer-const */
+    let outObject;
+    let value;
+    let key;
+    if (typeof input !== 'object' || input === null) {
       return input;
     }
 
