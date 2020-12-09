@@ -57,6 +57,17 @@ const BOARD_TEST_TWO = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+const BOARD_TEST_LOCKED = [
+  [2, 0, 1, 1, 1, 1, 1, 1],
+  [2, 2, 1, 1, 1, 1, 1, 1],
+  [2, 2, 2, 1, 1, 1, 1, 1],
+  [2, 2, 2, 2, 2, 1, 1, 1],
+  [2, 2, 1, 1, 2, 1, 1, 1],
+  [2, 2, 1, 2, 1, 2, 1, 1],
+  [2, 2, 1, 1, 2, 1, 2, 1],
+  [2, 2, 2, 2, 2, 2, 2, 2]
+];
+
 describe('ai helper', () => {
   it('getBigArray should get a big array', () => {
     expect(Wheatley.getBigArray()).toEqual([[], [], [], [], [], [], [], []]);
@@ -136,5 +147,12 @@ describe('ai core', () => {
     const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_TWO, TILE.WHITE);
     expect(supposedLegalMovesBlack).toEqual(LegalMovesArrayBlack);
     expect(supposedLegalMovesWhite).toEqual(LegalMovesArrayWhite);
+  });
+
+  it('getLegalMoves should return an empty array if no moves are possible', () => {
+    const supposedLegalMovesBlack = Glados.getLegalMoves(BOARD_TEST_LOCKED, TILE.BLACK);
+    const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_LOCKED, TILE.WHITE);
+    expect(supposedLegalMovesBlack).toEqual([]);
+    expect(supposedLegalMovesWhite).toEqual([]);
   });
 });
