@@ -289,6 +289,84 @@ class Glados {
 
     return moveCollection;
   }
+
+  // Var: position: Array<Array<Number>>, maxDepth: Number, alpha: Number.NEGATIVE_INFINITY, beta: Number.POSITIVE_INFINITY, maxPlayer: boolean
+  // Dsc: Determines which move should be chosen, utilizing the Minimax Algorithm along with Alpha-Beta pruning
+  // Out: {value: Number, board: Array<Array<Number>>}
+  minimax(position, maxDepth, alpha, beta, maxPlayer) {  
+    hvalue = 0;
+    if (maxPlayer) {
+      hvalue = heuristic(position, TILE.BLACK);
+    } else {
+      hvalue = heuristic(position, TILE.WHITE);
+    }
+    if (depth == 0 || (hvalue == WIN_GAME || hvalue == LOSE_GAME)) {
+        resultObject = {value: hvalue, board: position};
+        return [value, position];
+    }
+    if (maxPlayer) {
+        maxEvaluation = {value: Number.NEGATIVE_INFINITY, board: position};
+        legalMoves = getLegalMoves(position, TILE.WHITE);
+        for (child of legalMoves) {
+            evaluation = minimax(child, maxDepth - 1, alpha, beta, false);
+            if (max(maxEvaluation.value, evaluation.value) == evaluation) {
+              maxEvaluation = {value: evaluation.value, board: child};
+            }
+            alpha = max(alpha, evaluation.value);
+            if (beta <= alpha) {
+                break;
+            }
+        }
+        return maxEvaluation;
+    } else {
+        minEvaluation = {value: Number.POSITIVE_INFINITY, board: position};
+        legalMoves = getLegalMoves(position, TILE.BLACK)
+        for (child of legalMoves) {
+            evaluation = minimax(child, maxDepth - 1, alpha, beta, true);
+            if (min (minEvaluation.value, evaluation.value) == evaluation) {
+              minEvaluation = {value: evaluation.value, board: child};
+            }
+            beta = min(beta, evaluation.value);
+            if (beta <= alpha) {
+                break;
+            }
+        }
+        return minEvaluation;
+    }
+  }
+
+  // Var: board: Array<Array<Number>>, player: TILE
+  // Dsc: Calculates the heuristic value of the game board
+  // Out: (Number) heuristic value of the game board
+  heuristic (board, player) {
+    value = 0;
+    if ((getLegalMoves(board, TILE.WHITE) === [] && getLegalMoves(board, TILE.BLACK) === []) && player === TILE.BLACK) {
+      value = Number.POSITIVE_INFINITY;
+    } else if ((getLegalMoves(board, TILE.WHITE) === [] && getLegalMoves(board, TILE.BLACK) === []) && player === TILE.WHITE) {
+      value = Number.NEGATIVE_INFINITY;
+    } else {
+      score = getScore(board);
+      stability = getStability(board);
+      corners = getCorners(board);
+      value = (score.black - score.white) + (corners.tl + corners.tr + corners.bl + corners.br); //!!! STABILITY NEEDS TO BE IMPLEMENTED !!!
+    }
+    return value;
+  }
+
+  // Var: currentPosition: Array<Array<Number>>, newPosition: Array<Array<Number>>
+  // Dsc: Figures out which position on the board was chosen as the next move
+  // Out: Array with the coordinates of the next move to make. If [-1, -1], a move could not be made
+  findChosenMove (currentPosition, newPosition) {
+    position = [-1, -1];
+    for (i = 0; i <= 7; i++) {
+      for (j = 0; j <= 7; j++) {
+        if (newPosition[i][j] !== TILE.EMPTY && currentPosition[i][j] === TILE.EMPTY) {
+          position = [i, j];
+        }
+      }
+    }
+    return position;
+  }
 }
 
 module.exports = { TILE, STATUS, MOVE, Wheatley, Glados };
