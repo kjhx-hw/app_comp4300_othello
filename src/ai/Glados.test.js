@@ -1,6 +1,6 @@
 import { TILE, Glados, Wheatley } from './Glados';
 import BigTestArray from './test_resources/BigTestArray';
-import { LegalMovesArrayBlack, LegalMovesArrayWhite } from './test_resources/LegalMovesArray';
+import { LegalMovesArrayBlack, LegalMovesArrayWhite, LegalMovesMultiTestInput, LegalMovesMultiTestOutput } from './test_resources/LegalMovesArray';
 
 const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -145,8 +145,10 @@ describe('ai core', () => {
   it('getLegalMoves should return all possible legal moves from a single board', () => {
     const supposedLegalMovesBlack = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
     const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_TWO, TILE.WHITE);
+    const supposedLegalMovesMulti = Glados.getLegalMoves(LegalMovesMultiTestInput, TILE.WHITE);
     expect(supposedLegalMovesBlack).toEqual(LegalMovesArrayBlack);
     expect(supposedLegalMovesWhite).toEqual(LegalMovesArrayWhite);
+    expect(supposedLegalMovesMulti).toEqual(LegalMovesMultiTestOutput);
   });
 
   it('getLegalMoves should return an empty array if no moves are possible', () => {
