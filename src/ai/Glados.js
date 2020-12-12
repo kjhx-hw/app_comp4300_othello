@@ -128,13 +128,9 @@ class Glados {
     white: 0
   }
 
-  // Var: none
+  // Var: Array<Array<number>>
   // Dsc: Returns the scores of each player
   // Out: { 'black': number, 'white': number }
-  // static getScore() {
-  //   return { black: this.playerScore.black, white: this.playerScore.white };
-  // }
-
   static getScore(board) {
     let currentScore = { black:0, white: 0 };
 
@@ -158,13 +154,9 @@ class Glados {
     return this.stabTracker;
   }
 
-  // Var: none
+  // Var: Array<Array<number>>
   // Dsc: Returns the value of each corner tile
   // Out: { tl: number, tr: number, bl: number, br: number }
-  // static getCorners() {
-  //   return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
-  // }
-
   static getCorners(board) {
     return { tl: board[0][0], tr: board[0][7], bl: board[7][0], br: board[7][7] };
   }
