@@ -145,9 +145,12 @@ describe('ai core', () => {
   it('getLegalMoves should return all possible legal moves from a single board', () => {
     const supposedLegalMovesBlack = Glados.getLegalMoves(BOARD_TEST, TILE.BLACK);
     const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_TWO, TILE.WHITE);
-    const supposedLegalMovesMulti = Glados.getLegalMoves(LegalMovesMultiTestInput, TILE.WHITE);
     expect(supposedLegalMovesBlack).toEqual(LegalMovesArrayBlack);
     expect(supposedLegalMovesWhite).toEqual(LegalMovesArrayWhite);
+  });
+
+  it('getLegalMoves should be able to traverse long stretches of board', () => {
+    const supposedLegalMovesMulti = Glados.getLegalMoves(LegalMovesMultiTestInput, TILE.WHITE);
     expect(supposedLegalMovesMulti).toEqual(LegalMovesMultiTestOutput);
   });
 
