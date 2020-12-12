@@ -96,12 +96,6 @@ describe('ai helper', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
   });
 
-  it.skip('translateOut should return the correct BigTestArray', () => {
-    // TODO
-    // Console.log(Wheatley.translateOut(BOARD_TEST));
-    expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
-  });
-
   it('inBoard should return true if coordinates within bounds', () => {
     expect(Wheatley.inBoard(3, 2)).toEqual(true);
   });
@@ -143,12 +137,12 @@ describe('ai core', () => {
     expect(Glados.playerScore.black).not.toEqual(0);
   });
 
-  it.skip('getScore should return number of captured tiles', () => {
+  it('getScore should return number of captured tiles', () => {
     const scoreObject = { black: 32, white: 32 };
     expect(Glados.getScore()).toEqual(scoreObject);
   });
 
-  it.skip('getCorners should return corner values', () => {
+  it('getCorners should return corner values', () => {
     const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
     expect(Glados.getCorners()).toEqual(cornersObject);
   });
@@ -170,7 +164,7 @@ describe('ai core', () => {
     expect(supposedLegalMovesBlack).toEqual([]);
   });
 
-  it.skip('heuristic should return', () => {
+  it('heuristic should return', () => {
     const aiGuess = Glados.heuristic(BOARD_TEST, TILE.BLACK);
     console.log(aiGuess);
     expect(aiGuess).toEqual(-3);

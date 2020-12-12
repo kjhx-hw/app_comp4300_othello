@@ -28,9 +28,9 @@ const MOVE = {
 };
 
 const DIFFICULTY = {
-  EASY: { depth: 16, pause: 2000 },
-  MEDIUM: { depth: 32, pause: 4000 },
-  HARD: { depth: 64, pause: 6000 }
+  EASY: { depth: 16, pause: 1000 },
+  MEDIUM: { depth: 32, pause: 2000 },
+  HARD: { depth: 64, pause: 4000 }
 }
 
 // Helper functions for AI class
@@ -80,34 +80,6 @@ class Wheatley {
     }
 
     return newBoard;
-  }
-
-  // Var: board: Array<Array<number>>
-  // Dsc: Translates our 2d array of numbers into the game's board array
-  // Out: Object of type BigTestArray
-  static translateOut(board) {
-    const outArray = this.getBigArray();
-    let currentCellId = 1;
-    
-    // Recreate the Game.js board from our data
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        const newCellObject = { id: currentCellId, disk: '', canReverse: [] };
-        if (board[i][j] === TILE.BLACK) {
-          newCellObject.disk = 'black';
-        } else if (board[i][j] === TILE.WHITE) {
-          newCellObject.disk = 'white';
-        } else {
-          newCellObject.disk = null;
-        }
-
-        currentCellId++;
-        // TODO: calculate canReverse array
-        outArray[i].push(newCellObject);
-      }
-    }
-
-    return outArray;
   }
 
   // Var: x: number, y: number
@@ -334,7 +306,7 @@ class Glados {
   // Var: position: Array<Array<Number>>, maxDepth: Number, alpha: Number.NEGATIVE_INFINITY, beta: Number.POSITIVE_INFINITY, maxPlayer: boolean
   // Dsc: Determines which move should be chosen, utilizing the Minimax Algorithm along with Alpha-Beta pruning
   // Out: { value: Number, board: Array<Array<Number>> }
-  static minimax(position, maxDepth, alpha, beta, maxPlayer) {  
+  static minimax(position, maxDepth, alpha, beta, maxPlayer) {
     let hvalue = 0;
     if (maxPlayer) {
       hvalue = this.heuristic(position, TILE.BLACK);
