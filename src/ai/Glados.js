@@ -264,6 +264,11 @@ class Glados {
       Object.values(MOVE).forEach(direction => {
         let possibleBoard = Wheatley.deepCopy(board);
         let nextCoordinates = [ position[0] + direction[0], position[1] + direction[1]];
+        if (!Wheatley.inBoard(...nextCoordinates)) {
+          // If the next coordinates aren't valid, skip this iteration
+          return;
+        }
+
         let nextMove = possibleBoard[nextCoordinates[0]][nextCoordinates[1]];
         let traveled = 1;
         while (Wheatley.inBoard(...nextCoordinates) && nextMove !== player) {
@@ -271,6 +276,11 @@ class Glados {
             possibleBoard[nextCoordinates[0]][[nextCoordinates[1]]] = player;
             nextCoordinates[0] += direction[0];
             nextCoordinates[1] += direction[1];
+            if (!Wheatley.inBoard(...nextCoordinates)) {
+              // If the next coordinates aren't valid, skip this iteration
+              return;
+            }
+
             nextMove = possibleBoard[nextCoordinates[0]][nextCoordinates[1]];
             traveled++;
           } else {
