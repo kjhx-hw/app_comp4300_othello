@@ -174,7 +174,6 @@ class Game extends Component {
   }
         
   reverse(x, y) { 
-            
     const b = this.state.board;
             
     if (!b[x][y].canReverse || !b[x][y].canReverse.length) return;
@@ -192,9 +191,7 @@ class Game extends Component {
         };
       }, ()=>{
         let allowedCellsCount = this.calculateAllowedCells();
-
         if (!allowedCellsCount) { // PLAYER HAS NO MOVES
-                        
           this.setState((prevState)=>{
             return {
               currentPlayer: prevState.currentPlayer==='white'?'black':'white',
@@ -204,6 +201,12 @@ class Game extends Component {
             if (!allowedCellsCount) { // BOTH PLAYERS HAVE NO MOVES: GAME OVER
               this.props.end(this.winner(), this.score('white'), this.score('black'));
             }
+          });
+        } else if (this.state.currentPlayer === 'black') {
+          Wheatley.sleep(4000).then(() => {
+            const minimaxOutput = Glados.minimax(Wheatley.translateIn(b), 64, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
+            const nextMoveCoords = Glados.findChosenMove(Wheatley.translateIn(b), minimaxOutput.board);
+            this.reverse(...nextMoveCoords);
           });
         }
 

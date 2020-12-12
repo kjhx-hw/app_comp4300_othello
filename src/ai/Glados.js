@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const TILE = {
   'EMPTY': 0,
   'BLACK': 1,
@@ -6,11 +8,11 @@ const TILE = {
 
 const STATUS = {
   'LOSE_GAME': Number.NEGATIVE_INFINITY,
-  'LOSE_CORNER': -9,
+  'LOSE_CORNER': Number.MIN_SAFE_INTEGER,
   'UNSTABLE': -1,
   'NEARSTAB': 0,
   'STABLE': 1,
-  'WIN_CORNER': 9,
+  'WIN_CORNER': Number.MAX_SAFE_INTEGER,
   'WIN_GAME': Number.POSITIVE_INFINITY
 };
 
@@ -129,6 +131,10 @@ class Wheatley {
     }
 
     return outObject;
+  }
+
+  static sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
