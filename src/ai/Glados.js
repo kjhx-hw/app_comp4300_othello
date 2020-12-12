@@ -146,8 +146,24 @@ class Glados {
   // Var: none
   // Dsc: Returns the scores of each player
   // Out: { 'black': number, 'white': number }
-  static getScore() {
-    return { black: this.playerScore.black, white: this.playerScore.white };
+  // static getScore() {
+  //   return { black: this.playerScore.black, white: this.playerScore.white };
+  // }
+
+  static getScore(board) {
+    let currentScore = { black:0, white: 0 };
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] === TILE.WHITE) {
+          currentScore.white++;
+        } else if (board[i][j] === TILE.BLACK) {
+          currentScore.black++;
+        }
+      }
+    }
+
+    return currentScore;
   }
 
   // Var: none
@@ -160,8 +176,12 @@ class Glados {
   // Var: none
   // Dsc: Returns the value of each corner tile
   // Out: { tl: number, tr: number, bl: number, br: number }
-  static getCorners() {
-    return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
+  // static getCorners() {
+  //   return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
+  // }
+
+  static getCorners(board) {
+    return { tl: board[0][0], tr: board[0][7], bl: board[7][0], br: board[7][7] };
   }
 
   // Var: none
@@ -300,9 +320,9 @@ class Glados {
 
   // Var: position: Array<Array<Number>>, maxDepth: Number, alpha: Number.NEGATIVE_INFINITY, beta: Number.POSITIVE_INFINITY, maxPlayer: boolean
   // Dsc: Determines which move should be chosen, utilizing the Minimax Algorithm along with Alpha-Beta pruning
-  // Out: {value: Number, board: Array<Array<Number>>}
+  // Out: { value: Number, board: Array<Array<Number>> }
   static minimax(position, maxDepth, alpha, beta, maxPlayer) {  
-    let hvalue = 0;
+    let hvalue = -23456;
     if (maxPlayer) {
       hvalue = this.heuristic(position, TILE.BLACK);
     } else {
@@ -313,11 +333,13 @@ class Glados {
     }
     if (maxPlayer) {
       let maxEvaluation = {value: Number.NEGATIVE_INFINITY, board: position};
-      let legalMoves = this.getLegalMoves(position, TILE.WHITE);
+      let legalMoves = this.getLegalMoves(position, TILE.BLACK);
       for (const child of legalMoves) {
         let evaluation = this.minimax(child, maxDepth - 1, alpha, beta, false);
         if (Math.max(maxEvaluation.value, evaluation.value) === evaluation) {
-          maxEvaluation = {value: evaluation.value, board: child};
+          maxEvaluation = { value: evaluation.value, board: child };
+        } else {
+          maxEvaluation = { value: maxEvaluation.value, board: child };
         }
         alpha = Math.max(alpha, evaluation.value);
         if (beta <= alpha) {
@@ -325,28 +347,30 @@ class Glados {
         }
       }
       return maxEvaluation;
-    } 
-    let minEvaluation = {value: Number.POSITIVE_INFINITY, board: position};
-    let legalMoves = this.getLegalMoves(position, TILE.BLACK);
-    for (const child of legalMoves) {
-      let evaluation = this.minimax(child, maxDepth - 1, alpha, beta, true);
-      if (Math.min(minEvaluation.value, evaluation.value) === evaluation) {
-        minEvaluation = {value: evaluation.value, board: child};
+    } else {
+      let minEvaluation = { value: Number.POSITIVE_INFINITY, board: position };
+      let legalMoves = this.getLegalMoves(position, TILE.WHITE);
+      for (const child of legalMoves) {
+        let evaluation = this.minimax(child, maxDepth - 1, alpha, beta, true);
+        if (Math.min(minEvaluation.value, evaluation.value) === evaluation) {
+          minEvaluation = { value: evaluation.value, board: child };
+        } else {
+          minEvaluation = { value: minEvaluation.value, board: child };
+        }
+        beta = Math.min(beta, evaluation.value);
+        if (beta <= alpha) {
+          break;
+        }
       }
-      beta = Math.min(beta, evaluation.value);
-      if (beta <= alpha) {
-        break;
-      }
+      return minEvaluation;
     }
-    return minEvaluation;
-    
   }
 
   // Var: board: Array<Array<Number>>, player: TILE
   // Dsc: Calculates the heuristic value of the game board
   // Out: (Number) heuristic value of the game board
   static heuristic(board, player) {
-    let value = 0;
+    let value = -999;
     if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.BLACK) {
       value = Number.POSITIVE_INFINITY;
     } else if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.WHITE) {
