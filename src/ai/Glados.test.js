@@ -57,6 +57,17 @@ const BOARD_TEST_TWO = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+const BOARD_TEST_THREE = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 2, 2, 2, 0, 0, 0],
+  [0, 0, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];
+
 const BOARD_TEST_LOCKED = [
   [2, 0, 1, 1, 1, 1, 1, 1],
   [2, 2, 1, 1, 1, 1, 1, 1],
@@ -165,10 +176,14 @@ describe('ai core', () => {
     expect(aiGuess).toEqual(-3);
   });
 
-  it.only('minimax should return', () => {
+  it('minimax should return', () => {
     Glados.setGameboard(BOARD_TEST);
     const aiMove = Glados.minimax(BOARD_TEST, 64, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
-    console.log(aiMove);
     expect(aiMove).toBeTruthy();
+  });
+
+  it('findChosenMove should return the next move', () => {
+    const chosenMove = Glados.findChosenMove(BOARD_TEST, BOARD_TEST_THREE);
+    expect(chosenMove).toEqual([4, 2]);
   });
 });
