@@ -27,6 +27,12 @@ const MOVE = {
   'DOWN_LEFT': [1, -1]
 };
 
+const DIFFICULTY = {
+  EASY: { depth: 16, pause: 2000 },
+  MEDIUM: { depth: 32, pause: 4000 },
+  HARD: { depth: 64, pause: 6000 }
+}
+
 // Helper functions for AI class
 class Wheatley {
   // Var: none
@@ -144,6 +150,7 @@ class Glados {
   static gameboard = Wheatley.getBigArray();
   static stabTracker = Wheatley.getBigArray();
   static initFlag = false;
+  static difficultyLevel = DIFFICULTY.HARD;
   static playerScore = {
     black: 0,
     white: 0
@@ -328,7 +335,7 @@ class Glados {
   // Dsc: Determines which move should be chosen, utilizing the Minimax Algorithm along with Alpha-Beta pruning
   // Out: { value: Number, board: Array<Array<Number>> }
   static minimax(position, maxDepth, alpha, beta, maxPlayer) {  
-    let hvalue = -23456;
+    let hvalue = 0;
     if (maxPlayer) {
       hvalue = this.heuristic(position, TILE.BLACK);
     } else {
@@ -376,7 +383,7 @@ class Glados {
   // Dsc: Calculates the heuristic value of the game board
   // Out: (Number) heuristic value of the game board
   static heuristic(board, player) {
-    let value = -999;
+    let value = 0;
     if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.BLACK) {
       value = Number.POSITIVE_INFINITY;
     } else if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.WHITE) {

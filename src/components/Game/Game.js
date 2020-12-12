@@ -35,10 +35,11 @@ class Game extends Component {
   }
     
   render() {
+    const gameTitleBanner = this.state.currentPlayer === 'white' ? 'Your turn.' : 'Black\'s turn...';
     return (
       <div className="Game container">
         
-        <h3 className="Game--title">{this.state.currentPlayer}&apos;s turn</h3>
+        <h3 className="Game--title">{gameTitleBanner}</h3>
         {this.lostTurn()}  
         <div className="row">
           <Score player="white" score={this.score('white')}/>
@@ -203,8 +204,8 @@ class Game extends Component {
             }
           });
         } else if (this.state.currentPlayer === 'black') {
-          Wheatley.sleep(4000).then(() => {
-            const minimaxOutput = Glados.minimax(Wheatley.translateIn(b), 64, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
+          Wheatley.sleep(Glados.difficultyLevel.pause).then(() => {
+            const minimaxOutput = Glados.minimax(Wheatley.translateIn(b), Glados.difficultyLevel.depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
             const nextMoveCoords = Glados.findChosenMove(Wheatley.translateIn(b), minimaxOutput.board);
             this.reverse(...nextMoveCoords);
           });
