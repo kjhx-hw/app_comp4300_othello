@@ -28,9 +28,9 @@ const MOVE = {
 };
 
 const DIFFICULTY = {
-  EASY: { depth: 16, pause: 1000 },
-  MEDIUM: { depth: 32, pause: 2000 },
-  HARD: { depth: 64, pause: 4000 }
+  EASY: { depth: 16, pause: 500 },
+  MEDIUM: { depth: 32, pause: 1000 },
+  HARD: { depth: 64, pause: 2000 }
 }
 
 // Helper functions for AI class
