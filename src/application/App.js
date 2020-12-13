@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Game from '../components/Game/Game';
 import GameOver from '../components/GameOver/GameOver';
+import GameStart from '../components/GameStart/GameStart';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'active',
+      status: 'start',
       winner: null,
       whiteScore: 0,
       blackScore: 0
@@ -15,6 +16,7 @@ class App extends Component {
   }
 
   render() {
+    const gameStart = this.state.status === 'start' ? <GameStart go={this.startGame.bind(this)}/> : '';
     const game = this.state.status === 'active' ? <Game end={this.endGame.bind(this)} /> : '';
     const gameOver = this.state.status === 'over' ? <GameOver
       winner={this.state.winner}
@@ -25,15 +27,22 @@ class App extends Component {
 
     return (
       <div className="App">
+        {gameStart}
         {game}
         {gameOver}
       </div>
     );
   }
 
+  startGame() {
+    this.setState({
+      status: 'active'
+    });
+  }
+
   restartGame() {
     this.setState({
-      status: 'active',
+      status: 'start',
     });
   }
 

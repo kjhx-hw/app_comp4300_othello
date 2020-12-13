@@ -2,11 +2,9 @@
     margin: 0 auto;
     width: 600px;
     padding: 100px;
-    background:black;
-    color:white;
-    border:3px solid white;
+    color:black;
 }
 
-.GameOver h3:first-letter  {
+.GameOver h1:first-letter  {
     text-transform:capitalize;
 }

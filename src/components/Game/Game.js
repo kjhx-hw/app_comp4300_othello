@@ -35,10 +35,11 @@ class Game extends Component {
   }
     
   render() {
+    const gameTitleBanner = this.state.currentPlayer === 'white' ? 'Your turn.' : 'Black\'s turn...';
     return (
       <div className="Game container">
         
-        <h3 className="Game--title">{this.state.currentPlayer}&apos;s turn</h3>
+        <h3 className="Game--title">{gameTitleBanner}</h3>
         {this.lostTurn()}  
         <div className="row">
           <Score player="white" score={this.score('white')}/>
@@ -63,7 +64,7 @@ class Game extends Component {
   lostTurn() {
     if (!this.state.lostTurn) return '';
 
-    return <h4>{this.opponent()} lost his turn</h4>;
+    return <h4>{this.opponent()} lost the turn</h4>;
   }
 
   score(player) {
@@ -174,7 +175,6 @@ class Game extends Component {
   }
         
   reverse(x, y) { 
-            
     const b = this.state.board;
             
     if (!b[x][y].canReverse || !b[x][y].canReverse.length) return;
@@ -192,9 +192,7 @@ class Game extends Component {
         };
       }, ()=>{
         let allowedCellsCount = this.calculateAllowedCells();
-
         if (!allowedCellsCount) { // PLAYER HAS NO MOVES
-                        
           this.setState((prevState)=>{
             return {
               currentPlayer: prevState.currentPlayer==='white'?'black':'white',
@@ -204,6 +202,13 @@ class Game extends Component {
             if (!allowedCellsCount) { // BOTH PLAYERS HAVE NO MOVES: GAME OVER
               this.props.end(this.winner(), this.score('white'), this.score('black'));
             }
+          });
+        } else if (this.state.currentPlayer === 'black') {
+          
+          Wheatley.sleep(Glados.difficultyLevel.pause).then(() => {
+            const minimaxOutput = Glados.minimax(Wheatley.translateIn(b), Glados.difficultyLevel.depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
+            const nextMoveCoords = Glados.findChosenMove(Wheatley.translateIn(b), minimaxOutput.board);
+            this.reverse(...nextMoveCoords);
           });
         }
 

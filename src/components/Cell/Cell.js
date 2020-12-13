@@ -23,7 +23,7 @@ class Cell extends Component {
   }
 
   setHoverState(hovered) {
-    if (this.props.data.canReverse.length) {
+    if (this.props.data.canReverse.length && this.props.player !== 'black') {
       this.setState({hovered});
     }
   }
@@ -36,7 +36,7 @@ class Cell extends Component {
     let cls = 'Cell ';
     const cell = this.props.data;
     cls+= cell.disk?'Cell--occupied':'Cell--vacant';
-    if (cell.canReverse.length) cls+=' Cell--allowed';
+    if (cell.canReverse.length && this.props.player === 'white') cls+=' Cell--allowed';
     if (this.isNewest()) cls+=' Cell--newest';
 
     return cls;
@@ -54,7 +54,7 @@ class Cell extends Component {
 
   reverse() {
 
-    if (this.props.data.canReverse.length===0) return;
+    if (this.props.data.canReverse.length===0 || this.props.player === 'black') return;
 
     const x = this.props.position[0];
     const y = this.props.position[1];

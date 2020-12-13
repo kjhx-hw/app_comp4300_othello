@@ -1,6 +1,6 @@
 import { TILE, Glados, Wheatley } from './Glados';
 import BigTestArray from './test_resources/BigTestArray';
-import { LegalMovesArrayBlack, LegalMovesArrayWhite } from './test_resources/LegalMovesArray';
+import { LegalMovesArrayBlack, LegalMovesArrayWhite, LegalMovesMultiTestInput, LegalMovesMultiTestOutput } from './test_resources/LegalMovesArray';
 
 const BOARD_EMPTY = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -57,6 +57,17 @@ const BOARD_TEST_TWO = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
+const BOARD_TEST_THREE = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 2, 2, 2, 0, 0, 0],
+  [0, 0, 1, 1, 1, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];
+
 const BOARD_TEST_LOCKED = [
   [2, 0, 1, 1, 1, 1, 1, 1],
   [2, 2, 1, 1, 1, 1, 1, 1],
@@ -83,12 +94,6 @@ describe('ai helper', () => {
 
   it('translateIn should return 2D array', () => {
     expect(Wheatley.translateIn(BigTestArray)).toEqual(BOARD_TEST);
-  });
-
-  it.skip('translateOut should return the correct BigTestArray', () => {
-    // TODO
-    // Console.log(Wheatley.translateOut(BOARD_TEST));
-    expect(Wheatley.translateOut(BOARD_TEST)).toEqual(BigTestArray);
   });
 
   it('inBoard should return true if coordinates within bounds', () => {
@@ -134,12 +139,12 @@ describe('ai core', () => {
 
   it('getScore should return number of captured tiles', () => {
     const scoreObject = { black: 32, white: 32 };
-    expect(Glados.getScore()).toEqual(scoreObject);
+    expect(Glados.getScore(BOARD_SPLIT)).toEqual(scoreObject);
   });
 
   it('getCorners should return corner values', () => {
     const cornersObject = { tl: 1, tr: 2, bl: 1, br: 2 };
-    expect(Glados.getCorners()).toEqual(cornersObject);
+    expect(Glados.getCorners(BOARD_SPLIT)).toEqual(cornersObject);
   });
 
   it('getLegalMoves should return all possible legal moves from a single board', () => {
@@ -149,10 +154,29 @@ describe('ai core', () => {
     expect(supposedLegalMovesWhite).toEqual(LegalMovesArrayWhite);
   });
 
+  it('getLegalMoves should be able to traverse long stretches of board', () => {
+    const supposedLegalMovesMulti = Glados.getLegalMoves(LegalMovesMultiTestInput, TILE.WHITE);
+    expect(supposedLegalMovesMulti).toEqual(LegalMovesMultiTestOutput);
+  });
+
   it('getLegalMoves should return an empty array if no moves are possible', () => {
     const supposedLegalMovesBlack = Glados.getLegalMoves(BOARD_TEST_LOCKED, TILE.BLACK);
-    const supposedLegalMovesWhite = Glados.getLegalMoves(BOARD_TEST_LOCKED, TILE.WHITE);
     expect(supposedLegalMovesBlack).toEqual([]);
-    expect(supposedLegalMovesWhite).toEqual([]);
+  });
+
+  it('heuristic should return', () => {
+    const aiGuess = Glados.heuristic(BOARD_TEST, TILE.BLACK);
+    expect(aiGuess).toEqual(-3);
+  });
+
+  it('minimax should return', () => {
+    Glados.setGameboard(BOARD_TEST);
+    const aiMove = Glados.minimax(BOARD_TEST, 64, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
+    expect(aiMove).toBeTruthy();
+  });
+
+  it('findChosenMove should return the next move', () => {
+    const chosenMove = Glados.findChosenMove(BOARD_TEST, BOARD_TEST_THREE);
+    expect(chosenMove).toEqual([4, 2]);
   });
 });

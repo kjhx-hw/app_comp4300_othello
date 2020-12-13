@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const TILE = {
   'EMPTY': 0,
   'BLACK': 1,
@@ -6,26 +8,15 @@ const TILE = {
 
 const STATUS = {
   'LOSE_GAME': Number.NEGATIVE_INFINITY,
-  'LOSE_CORNER': -9,
+  'LOSE_CORNER': Number.MIN_SAFE_INTEGER,
   'UNSTABLE': -1,
   'NEARSTAB': 0,
   'STABLE': 1,
-  'WIN_CORNER': 9,
+  'WIN_CORNER': Number.MAX_SAFE_INTEGER,
   'WIN_GAME': Number.POSITIVE_INFINITY
 };
 
 const MOVE = {
-  'RIGHT': [0, 2],
-  'LEFT': [0, -2],
-  'UP': [-2, 0],
-  'DOWN': [2, 0],
-  'DOWN_RIGHT': [2, 2],
-  'UP_RIGHT': [-2, 2],
-  'UP_LEFT': [-2, -2],
-  'DOWN_LEFT': [2, -2]
-};
-
-const MOVE_IMMEDIATE = {
   'RIGHT': [0, 1],
   'LEFT': [0, -1],
   'UP': [-1, 0],
@@ -35,6 +26,12 @@ const MOVE_IMMEDIATE = {
   'UP_LEFT': [-1, -1],
   'DOWN_LEFT': [1, -1]
 };
+
+const DIFFICULTY = {
+  EASY: { depth: 16, pause: 500 },
+  MEDIUM: { depth: 32, pause: 1000 },
+  HARD: { depth: 64, pause: 2000 }
+}
 
 // Helper functions for AI class
 class Wheatley {
@@ -85,34 +82,6 @@ class Wheatley {
     return newBoard;
   }
 
-  // Var: board: Array<Array<number>>
-  // Dsc: Translates our 2d array of numbers into the game's board array
-  // Out: Object of type BigTestArray
-  static translateOut(board) {
-    const outArray = this.getBigArray();
-    let currentCellId = 1;
-    
-    // Recreate the Game.js board from our data
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[i].length; j++) {
-        const newCellObject = { id: currentCellId, disk: '', canReverse: [] };
-        if (board[i][j] === TILE.BLACK) {
-          newCellObject.disk = 'black';
-        } else if (board[i][j] === TILE.WHITE) {
-          newCellObject.disk = 'white';
-        } else {
-          newCellObject.disk = null;
-        }
-
-        currentCellId++;
-        // TODO: calculate canReverse array
-        outArray[i].push(newCellObject);
-      }
-    }
-
-    return outArray;
-  }
-
   // Var: x: number, y: number
   // Dsc: Determines if a set of coordinates is within the bounds of the gameboard
   // Out: boolean
@@ -141,6 +110,10 @@ class Wheatley {
 
     return outObject;
   }
+
+  static sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
 
 
@@ -149,16 +122,42 @@ class Glados {
   static gameboard = Wheatley.getBigArray();
   static stabTracker = Wheatley.getBigArray();
   static initFlag = false;
+  static difficultyLevel = DIFFICULTY.EASY;
   static playerScore = {
     black: 0,
     white: 0
   }
 
-  // Var: none
+  // Var: diff: string
+  // Dsc: Sets the difficult level
+  // Out: none
+  static setDifficulty(diff) {
+    if (diff === 'EASY') {
+      this.difficultyLevel = DIFFICULTY.EASY;
+    } else if (diff === 'MEDIUM') {
+      this.difficultyLevel = DIFFICULTY.MEDIUM;
+    } else if (diff === 'HARD') {
+      this.difficultyLevel = DIFFICULTY.HARD;
+    }
+  }
+
+  // Var: Array<Array<number>>
   // Dsc: Returns the scores of each player
   // Out: { 'black': number, 'white': number }
-  static getScore() {
-    return { black: this.playerScore.black, white: this.playerScore.white };
+  static getScore(board) {
+    let currentScore = { black:0, white: 0 };
+
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] === TILE.WHITE) {
+          currentScore.white++;
+        } else if (board[i][j] === TILE.BLACK) {
+          currentScore.black++;
+        }
+      }
+    }
+
+    return currentScore;
   }
 
   // Var: none
@@ -168,11 +167,11 @@ class Glados {
     return this.stabTracker;
   }
 
-  // Var: none
+  // Var: Array<Array<number>>
   // Dsc: Returns the value of each corner tile
   // Out: { tl: number, tr: number, bl: number, br: number }
-  static getCorners() {
-    return { tl: this.gameboard[0][0], tr: this.gameboard[0][7], bl: this.gameboard[7][0], br: this.gameboard[7][7] };
+  static getCorners(board) {
+    return { tl: board[0][0], tr: board[0][7], bl: board[7][0], br: board[7][7] };
   }
 
   // Var: none
@@ -191,6 +190,8 @@ class Glados {
         this.stabTracker[i][j] = STATUS.STABLE;
       }
     }
+
+    this.setDifficulty('easy');
   }
 
   // Var: none
@@ -216,6 +217,7 @@ class Glados {
     if (Wheatley.isValidArray(board)) {
       Glados.gameboard = board;
       this.updatePlayerScore();
+      // Update stability
     } else {
       throw new TypeError('Invalid board.');
     }
@@ -260,7 +262,7 @@ class Glados {
       throw new TypeError('Invalid board.');
     }
 
-    // Collect all posistions for `player`
+    // Collect all positions for `player`
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].length; j++) {
         if (board[i][j] !== TILE.EMPTY && board[i][j] === player) {
@@ -270,18 +272,36 @@ class Glados {
     }
 
     // Try every possible move on every position to determine legal moves
-    posToCheck.forEach(coord => {
-      Object.keys(MOVE).forEach(move => {
-        const nextBoard = Wheatley.deepCopy(board);
-        const currentMove = nextBoard[coord[0]][coord[1]];
-        if (Wheatley.inBoard(coord[0] + MOVE[move][0], coord[1] + MOVE[move][1])) {
-          const nextMove = nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]];
-          const betweenMove = nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]];
-          // If a move is legal, modify `nextBoard` to reflect the state of the game if they took that move
-          if (nextMove === TILE.EMPTY && betweenMove !== TILE.EMPTY && betweenMove !== player) {
-            nextBoard[coord[0] + MOVE[move][0]][coord[1] + MOVE[move][1]] = currentMove;
-            nextBoard[coord[0] + MOVE_IMMEDIATE[move][0]][coord[1] + MOVE_IMMEDIATE[move][1]] = currentMove;
-            moveCollection.push(nextBoard);
+    posToCheck.forEach(position => {
+      Object.values(MOVE).forEach(direction => {
+        let possibleBoard = Wheatley.deepCopy(board);
+        let nextCoordinates = [ position[0] + direction[0], position[1] + direction[1]];
+        if (!Wheatley.inBoard(...nextCoordinates)) {
+          // If the next coordinates aren't valid, skip this iteration
+          return;
+        }
+
+        let nextMove = possibleBoard[nextCoordinates[0]][nextCoordinates[1]];
+        let traveled = 1;
+        while (Wheatley.inBoard(...nextCoordinates) && nextMove !== player) {
+          if (nextMove !== player && nextMove !== TILE.EMPTY) {
+            possibleBoard[nextCoordinates[0]][[nextCoordinates[1]]] = player;
+            nextCoordinates[0] += direction[0];
+            nextCoordinates[1] += direction[1];
+            if (!Wheatley.inBoard(...nextCoordinates)) {
+              // If the next coordinates aren't valid, skip this iteration
+              return;
+            }
+
+            nextMove = possibleBoard[nextCoordinates[0]][nextCoordinates[1]];
+            traveled++;
+          } else {
+            possibleBoard[nextCoordinates[0]][[nextCoordinates[1]]] = player;
+            if (traveled > 1) {
+              moveCollection.push(possibleBoard);
+            }
+
+            break;
           }
         }
       });
@@ -292,62 +312,65 @@ class Glados {
 
   // Var: position: Array<Array<Number>>, maxDepth: Number, alpha: Number.NEGATIVE_INFINITY, beta: Number.POSITIVE_INFINITY, maxPlayer: boolean
   // Dsc: Determines which move should be chosen, utilizing the Minimax Algorithm along with Alpha-Beta pruning
-  // Out: {value: Number, board: Array<Array<Number>>}
-  minimax(position, maxDepth, alpha, beta, maxPlayer) {  
-    hvalue = 0;
+  // Out: { value: Number, board: Array<Array<Number>> }
+  static minimax(position, maxDepth, alpha, beta, maxPlayer) {
+    let hvalue = 0;
     if (maxPlayer) {
-      hvalue = heuristic(position, TILE.BLACK);
+      hvalue = this.heuristic(position, TILE.BLACK);
     } else {
-      hvalue = heuristic(position, TILE.WHITE);
+      hvalue = this.heuristic(position, TILE.WHITE);
     }
-    if (depth == 0 || (hvalue == WIN_GAME || hvalue == LOSE_GAME)) {
-        resultObject = {value: hvalue, board: position};
-        return [value, position];
+    if (maxDepth === 0 || (hvalue === STATUS.WIN_GAME || hvalue === STATUS.LOSE_GAME)) {
+      return {value: hvalue, board: position};
     }
     if (maxPlayer) {
-        maxEvaluation = {value: Number.NEGATIVE_INFINITY, board: position};
-        legalMoves = getLegalMoves(position, TILE.WHITE);
-        for (child of legalMoves) {
-            evaluation = minimax(child, maxDepth - 1, alpha, beta, false);
-            if (max(maxEvaluation.value, evaluation.value) == evaluation) {
-              maxEvaluation = {value: evaluation.value, board: child};
-            }
-            alpha = max(alpha, evaluation.value);
-            if (beta <= alpha) {
-                break;
-            }
+      let maxEvaluation = {value: Number.NEGATIVE_INFINITY, board: position};
+      let legalMoves = this.getLegalMoves(position, TILE.BLACK);
+      for (const child of legalMoves) {
+        let evaluation = this.minimax(child, maxDepth - 1, alpha, beta, false);
+        if (Math.max(maxEvaluation.value, evaluation.value) === evaluation) {
+          maxEvaluation = { value: evaluation.value, board: child };
+        } else {
+          maxEvaluation = { value: maxEvaluation.value, board: child };
         }
-        return maxEvaluation;
+        alpha = Math.max(alpha, evaluation.value);
+        if (beta <= alpha) {
+          break;
+        }
+      }
+      return maxEvaluation;
     } else {
-        minEvaluation = {value: Number.POSITIVE_INFINITY, board: position};
-        legalMoves = getLegalMoves(position, TILE.BLACK)
-        for (child of legalMoves) {
-            evaluation = minimax(child, maxDepth - 1, alpha, beta, true);
-            if (min (minEvaluation.value, evaluation.value) == evaluation) {
-              minEvaluation = {value: evaluation.value, board: child};
-            }
-            beta = min(beta, evaluation.value);
-            if (beta <= alpha) {
-                break;
-            }
+      let minEvaluation = { value: Number.POSITIVE_INFINITY, board: position };
+      let legalMoves = this.getLegalMoves(position, TILE.WHITE);
+      for (const child of legalMoves) {
+        let evaluation = this.minimax(child, maxDepth - 1, alpha, beta, true);
+        if (Math.min(minEvaluation.value, evaluation.value) === evaluation) {
+          minEvaluation = { value: evaluation.value, board: child };
+        } else {
+          minEvaluation = { value: minEvaluation.value, board: child };
         }
-        return minEvaluation;
+        beta = Math.min(beta, evaluation.value);
+        if (beta <= alpha) {
+          break;
+        }
+      }
+      return minEvaluation;
     }
   }
 
   // Var: board: Array<Array<Number>>, player: TILE
   // Dsc: Calculates the heuristic value of the game board
   // Out: (Number) heuristic value of the game board
-  heuristic (board, player) {
-    value = 0;
-    if ((getLegalMoves(board, TILE.WHITE) === [] && getLegalMoves(board, TILE.BLACK) === []) && player === TILE.BLACK) {
+  static heuristic(board, player) {
+    let value = 0;
+    if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.BLACK) {
       value = Number.POSITIVE_INFINITY;
-    } else if ((getLegalMoves(board, TILE.WHITE) === [] && getLegalMoves(board, TILE.BLACK) === []) && player === TILE.WHITE) {
+    } else if ((this.getLegalMoves(board, TILE.WHITE) === [] && this.getLegalMoves(board, TILE.BLACK) === []) && player === TILE.WHITE) {
       value = Number.NEGATIVE_INFINITY;
     } else {
-      score = getScore(board);
-      stability = getStability(board);
-      corners = getCorners(board);
+      let score = this.getScore(board);
+      // TODO: let stability = this.getStability();
+      let corners = this.getCorners(board);
       value = (score.black - score.white) + (corners.tl + corners.tr + corners.bl + corners.br); //!!! STABILITY NEEDS TO BE IMPLEMENTED !!!
     }
     return value;
@@ -356,10 +379,10 @@ class Glados {
   // Var: currentPosition: Array<Array<Number>>, newPosition: Array<Array<Number>>
   // Dsc: Figures out which position on the board was chosen as the next move
   // Out: Array with the coordinates of the next move to make. If [-1, -1], a move could not be made
-  findChosenMove (currentPosition, newPosition) {
-    position = [-1, -1];
-    for (i = 0; i <= 7; i++) {
-      for (j = 0; j <= 7; j++) {
+  static findChosenMove (currentPosition, newPosition) {
+    let position = [-1, -1];
+    for (let i = 0; i <= 7; i++) {
+      for (let j = 0; j <= 7; j++) {
         if (newPosition[i][j] !== TILE.EMPTY && currentPosition[i][j] === TILE.EMPTY) {
           position = [i, j];
         }
