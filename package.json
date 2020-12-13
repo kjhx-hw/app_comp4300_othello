@@ -43,7 +43,7 @@
     "dev": "nf start -p 3000",
     "pack": "electron-builder --dir",
     "dist": "npm run build && electron-builder",
-    "postinstall": "install-app-deps"
+    "postinstall": "electron-builder install-app-deps"
   },
   "browserslist": {
     "production": [
