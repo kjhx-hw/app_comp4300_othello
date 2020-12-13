@@ -1,0 +1,14 @@
+.GameStart {
+    margin: 0 auto;
+    width: 600px;
+    padding: 100px;
+    color:black;
+}
+
+.GameStart button {
+    margin-bottom: 1rem;
+}
+
+.GameStart label {
+    margin-right: .3rem;
+}

@@ -64,7 +64,7 @@ class Game extends Component {
   lostTurn() {
     if (!this.state.lostTurn) return '';
 
-    return <h4>{this.opponent()} lost his turn</h4>;
+    return <h4>{this.opponent()} lost the turn</h4>;
   }
 
   score(player) {
@@ -204,6 +204,7 @@ class Game extends Component {
             }
           });
         } else if (this.state.currentPlayer === 'black') {
+          
           Wheatley.sleep(Glados.difficultyLevel.pause).then(() => {
             const minimaxOutput = Glados.minimax(Wheatley.translateIn(b), Glados.difficultyLevel.depth, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, true);
             const nextMoveCoords = Glados.findChosenMove(Wheatley.translateIn(b), minimaxOutput.board);

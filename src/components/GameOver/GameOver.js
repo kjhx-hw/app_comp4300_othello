@@ -5,7 +5,7 @@ class GameOver extends Component {
     
   render() {
     return (<div className="GameOver">
-      <h3>{this.gameOverText()}</h3>
+      <h1>{this.gameOverText()}</h1>
       <p>White Score: <b>{this.props.white}</b></p>
       <p>Black Score: <b>{this.props.black}</b></p>
                 

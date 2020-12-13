@@ -122,10 +122,23 @@ class Glados {
   static gameboard = Wheatley.getBigArray();
   static stabTracker = Wheatley.getBigArray();
   static initFlag = false;
-  static difficultyLevel = DIFFICULTY.HARD;
+  static difficultyLevel = DIFFICULTY.EASY;
   static playerScore = {
     black: 0,
     white: 0
+  }
+
+  // Var: diff: string
+  // Dsc: Sets the difficult level
+  // Out: none
+  static setDifficulty(diff) {
+    if (diff === 'EASY') {
+      this.difficultyLevel = DIFFICULTY.EASY;
+    } else if (diff === 'MEDIUM') {
+      this.difficultyLevel = DIFFICULTY.MEDIUM;
+    } else if (diff === 'HARD') {
+      this.difficultyLevel = DIFFICULTY.HARD;
+    }
   }
 
   // Var: Array<Array<number>>
@@ -177,6 +190,8 @@ class Glados {
         this.stabTracker[i][j] = STATUS.STABLE;
       }
     }
+
+    this.setDifficulty('easy');
   }
 
   // Var: none
