@@ -2,7 +2,7 @@
   "name": "app_comp4300_othello",
   "productName": "Othello",
   "description": "Othello with a splash of AI. Written for COMP 4300.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "author": "Kyle Huggins (http://huggins.io/)",
   "contributors": [
