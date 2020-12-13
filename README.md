@@ -14,11 +14,11 @@ This project was written for COMP 4300 at Harding University. The boilerplate fo
 ## Getting Started
 ### Running
 1. [Download and install][nodejs-download] Node.js for your platform.
-2. Download and navigate to this repository on your machine.
+2. Download, extract, and navigate to this repository on your machine.
 3. Install project dependencies with `npm install`
 4. Compile and run with `npm run dev`
 
-You should now see the application running on your desktop.
+After a few moments, you should see the application running on your desktop.
 
 ### Contributing
 See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
