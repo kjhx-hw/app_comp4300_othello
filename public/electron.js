@@ -14,7 +14,7 @@ function createWindow() {
     width: 1000, height: 650, resizable: false, center: true,
     webPreferences: {
       nodeIntegration: true,
-      devTools: is.development
+      devTools: false
     }
   });
 
